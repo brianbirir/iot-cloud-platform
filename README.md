@@ -4,6 +4,12 @@
 * Version
 
 ### How do I get set up? ###
+
+#### Quick Install
+* Download this repo via `git clone` to your current folder
+* Run installer.sh i.e. `./installer.sh`
+
+#### Manual Install
 * Install Mosquitto on Ubuntu Server
 ```
 sudo apt-get install mosquitto mosquitto-clients
@@ -20,7 +26,6 @@ sudo apt-get install mosquitto mosquitto-clients
 ```
     mosquitto_pub -h localhost -t test -m "hello world"
 ```
-
 
 ### Contribution guidelines ###
 
