@@ -7,9 +7,10 @@
 
 #### Quick Install
 * Download this repo via `git clone` to your current folder
-* Run installer.sh i.e. `./installer.sh`
+* Run installer.sh i.e. `./installer.sh`. This will install MQTT broker, InfluxDB and configure bith services. It will also install and configure the subscriber as a service to run on an Ubuntu VM.
 
 #### Manual Install
+##### Mosquitto
 * Install Mosquitto on Ubuntu Server
 ```
 sudo apt-get install mosquitto mosquitto-clients
@@ -27,8 +28,7 @@ sudo apt-get install mosquitto mosquitto-clients
     mosquitto_pub -h localhost -t test -m "hello world"
 ```
 
-### Contribution guidelines ###
-
+##### InfluxDB
 
 ### Change Log ###
 
