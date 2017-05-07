@@ -1,16 +1,15 @@
-### What is this repository for? ###
+## What is this repository for? ###
 
-* MQTT Broker/Server - Mosquitto
-* Version
+Implementation of an MQTT broker and MQTT subscriber to receive data from a sensor gateway that publishes the data.
 
-### How do I get set up? ###
+## How do I get set up? ###
 
-#### Quick Install
+### Quick Install
 * Download this repo via `git clone` to your current folder
 * Run installer.sh i.e. `./installer.sh`. This will install MQTT broker, InfluxDB and configure bith services. It will also install and configure the subscriber as a service to run on an Ubuntu VM.
 
-#### Manual Install
-##### Mosquitto
+### Manual Install
+#### Mosquitto
 * Install Mosquitto on Ubuntu Server
 ```
 sudo apt-get install mosquitto mosquitto-clients
@@ -28,10 +27,10 @@ sudo apt-get install mosquitto mosquitto-clients
     mosquitto_pub -h localhost -t test -m "hello world"
 ```
 
-##### InfluxDB
+#### InfluxDB
 
-### Change Log ###
+## Change Log ###
 
-### Author ###
+## Author ###
 
 * Brian Birir
