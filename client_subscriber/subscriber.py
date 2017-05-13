@@ -8,6 +8,8 @@ MQTT_Port = 1883
 Keep_Alive_Interval = 60
 MQTT_Topic = 'Room/Si7021/#'
 MQTT_qos = 0
+MQTT_username = 'ruleblox'
+MQTT_password = 'ruleblox@2017#!'
 
 # callback functions for subscriber
 def on_connect(mqtt_client, userdata, rc):
@@ -43,5 +45,7 @@ mqtt_client.on_unsubscribe = on_unsubscribe
 
 def connect_to_broker():
     # connect to broker and loop forever
+    # set username and password to connecto to MQTT broker
+    mqtt_client.username_pw_set(MQTT_username, MQTT_password)
     mqtt_client.connect(MQTT_Broker, MQTT_Port)
     mqtt_client.loop_forever()
