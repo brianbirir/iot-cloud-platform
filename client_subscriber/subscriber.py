@@ -1,26 +1,32 @@
 # this module subscribes to topic payloads sent by gateway MQTT client publisher
 
 import paho.mqtt.client as mqtt
-import
+
+# MQTT Settings
+MQTT_Broker = 'localhost'
+MQTT_Port = 1883
+Keep_Alive_Interval = 60
+MQTT_Topic = 'Room/Si7021/#'
+MQTT_qos = 0
 
 # callback functions for subscriber
-def on_connect(mqttc, userdata, rc):
+def on_connect(mqtt_client, userdata, rc):
     print('connected...rc=' + str(rc))
-    mqttc.subscribe(topic='device/#', qos=0)
+    mqttc.subscribe(MQTT_Topic, MQTT_qos)
 
-def on_disconnect(mqttc, userdata, rc):
+def on_disconnect(mqtt_client, userdata, rc):
     print('disconnected...rc=' + str(rc))
 
-def on_message(mqttc, userdata, msg):
-    print('message received...')
-    print('topic: ' + msg.topic + ', qos: ' + 
-          str(msg.qos) + ', message: ' + str(msg.payload))
-    save_to_db(msg)
+def on_message(mqtt_client, userdata, msg):
+	print "MQTT Data Received..."
+	print "MQTT Topic: " + str(msg.topic)
+	print "Data: " + str(msg.payload)
+	#sensor_Data_Handler(msg.topic, msg.payload)
 
-def on_subscribe(mqttc, userdata, mid, granted_qos):
+def on_subscribe(mqtt_client, userdata, mid, granted_qos):
     print('subscribed (qos=' + str(granted_qos) + ')')
 
-def on_unsubscribe(mqttc, userdata, mid, granted_qos):
+def on_unsubscribe(mqtt_client, userdata, mid, granted_qos):
     print('unsubscribed (qos=' + str(granted_qos) + ')')
 
 
@@ -34,6 +40,8 @@ mqtt_client.on_message = on_message
 mqtt_client.on_subscribe = on_subscribe
 mqtt_client.on_unsubscribe = on_unsubscribe
 
-# connect and loop forever
-mqttc.connect(host='localhost', port=1883)
-mqttc.loop_forever()
+
+def connect_to_broker():
+    # connect to broker and loop forever
+    mqtt_client.connect(MQTT_Broker, MQTT_Port)
+    mqtt_client.loop_forever()
