@@ -26,7 +26,12 @@ sudo apt-get install mosquitto mosquitto-clients
 ```
     mosquitto_pub -h localhost -t test -m "hello world"
 ```
+* Setup password by editing /etc/mosquitto/passwd. Add username and password to the file
 
+* Encrypt password file i.e. `mosquitto_passwd -U passwd`
+
+
+mosquitto_passwd -U passwordfile
 #### InfluxDB
 
 ## Change Log ###
