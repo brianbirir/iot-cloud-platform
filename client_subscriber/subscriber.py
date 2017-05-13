@@ -1,4 +1,4 @@
-# this module subscribes to topic payloads sent by gateway publisher
+# this module subscribes to topic payloads sent by gateway MQTT client publisher
 
 import paho.mqtt.client as mqtt
 import
