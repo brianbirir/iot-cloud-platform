@@ -12,7 +12,7 @@ MQTT_qos = 0
 # callback functions for subscriber
 def on_connect(mqtt_client, userdata, rc):
     print('connected...rc=' + str(rc))
-    mqttc.subscribe(MQTT_Topic, MQTT_qos)
+    mqtt_client.subscribe(MQTT_Topic, MQTT_qos)
 
 def on_disconnect(mqtt_client, userdata, rc):
     print('disconnected...rc=' + str(rc))
