@@ -1,6 +1,7 @@
 # this module subscribes to topic payloads sent by gateway MQTT client publisher
 
 import paho.mqtt.client as mqtt
+import influx_db
 
 # MQTT Settings
 MQTT_Broker = 'localhost'

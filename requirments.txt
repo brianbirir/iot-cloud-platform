@@ -1,1 +1,2 @@
 paho-mqtt==1.2.3
+influxdb==4.1.0
