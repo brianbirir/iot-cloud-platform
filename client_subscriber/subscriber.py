@@ -1,13 +1,13 @@
 # this module subscribes to topic payloads sent by gateway MQTT client publisher
 
 import paho.mqtt.client as mqtt
-import influx_db
+from influx_db import sensor_handler
 
 # MQTT Settings
 MQTT_Broker = 'localhost'
 MQTT_Port = 1883
 Keep_Alive_Interval = 60
-MQTT_Topic = 'Room/Si7021/#'
+MQTT_Topic = 'Room/#'
 MQTT_qos = 0
 MQTT_username = 'ruleblox'
 MQTT_password = 'ruleblox@2017#!'
@@ -24,7 +24,7 @@ def on_message(mqtt_client, userdata, msg):
 	print "MQTT Data Received..."
 	print "MQTT Topic: " + str(msg.topic)
 	print "Data: " + str(msg.payload)
-	#sensor_Data_Handler(msg.topic, msg.payload)
+	sensor_handler(msg.topic, msg.payload)
 
 def on_subscribe(mqtt_client, userdata, mid, granted_qos):
     print('subscribed (qos=' + str(granted_qos) + ')')
