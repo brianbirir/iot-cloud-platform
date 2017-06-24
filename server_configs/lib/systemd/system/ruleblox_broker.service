@@ -5,6 +5,8 @@ After=multi-user.target
 [Service]
 Type=idle
 ExecStart=/usr/bin/python /root/client_subscriber/run.py /root/ruleblox_broker.log 2>&1
+Restart=always
+RestartSec=3
 
 [Install]
 WantedBy=multi-user.target
