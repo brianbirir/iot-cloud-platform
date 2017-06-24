@@ -59,7 +59,7 @@ def sensor_data_handler(sensorData):
 # function to collect data from subscriber
 def sensor_handler(topic, jsonSensorData):
 
-    if topic == 'Room/Si7021':
-        sensor_data_handler(jsonSensorData)
-    else:
-        print "No topic to subscribe to!"
+    #if topic == 'Room/Si7021':
+    sensor_data_handler(jsonSensorData)
+    #else:
+        #print "No topic to subscribe to!"
