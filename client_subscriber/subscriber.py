@@ -12,22 +12,27 @@ MQTT_qos = 0
 MQTT_username = 'ruleblox'
 MQTT_password = 'ruleblox@2017#!'
 
+
 # callback functions for subscriber
 def on_connect(mqtt_client, userdata, rc):
     print('connected...rc=' + str(rc))
     mqtt_client.subscribe(MQTT_Topic, MQTT_qos)
 
+
 def on_disconnect(mqtt_client, userdata, rc):
     print('disconnected...rc=' + str(rc))
 
+
 def on_message(mqtt_client, userdata, msg):
-	print "MQTT Data Received..."
-	print "MQTT Topic: " + str(msg.topic)
-	print "Data: " + str(msg.payload)
-	sensor_handler(msg.topic, msg.payload)
+    print "MQTT Data Received..."
+    print "MQTT Topic: " + str(msg.topic)
+    print "Data: " + str(msg.payload)
+    sensor_handler(msg.topic, msg.payload)
+
 
 def on_subscribe(mqtt_client, userdata, mid, granted_qos):
     print('subscribed (qos=' + str(granted_qos) + ')')
+
 
 def on_unsubscribe(mqtt_client, userdata, mid, granted_qos):
     print('unsubscribed (qos=' + str(granted_qos) + ')')
