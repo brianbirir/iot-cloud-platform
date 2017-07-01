@@ -23,6 +23,7 @@ def on_disconnect(mqtt_client, userdata, rc):
     print('disconnected...rc=' + str(rc))
 
 
+# on message collect payload and save to Influx DB database
 def on_message(mqtt_client, userdata, msg):
     print "MQTT Data Received..."
     print "MQTT Topic: " + str(msg.topic)

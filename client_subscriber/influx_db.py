@@ -15,7 +15,7 @@ client_db = InfluxDBClient(db_host, db_port, db_user, db_password)
 
 
 # check if DB exists, if not create it
-def check_DB():
+def check_db():
     # get all databases
     all_dbs_list = client_db.get_list_database()
 
@@ -31,6 +31,7 @@ def check_DB():
 
 # store sensor data
 def sensor_data_handler(sensor_data):
+
     # parse the json data
     json_Dict = json.loads(sensor_data)
     SensorID = json_Dict['Sensor_ID']
@@ -56,7 +57,7 @@ def sensor_data_handler(sensor_data):
     ]
 
     # check database existence
-    check_DB()
+    check_db()
 
     # write points
     client_db.write_points(json_body)
