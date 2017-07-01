@@ -7,7 +7,7 @@ from influx_db import sensor_handler
 MQTT_Broker = 'localhost'
 MQTT_Port = 1883
 Keep_Alive_Interval = 60
-MQTT_Topic = 'Room/#'
+MQTT_Topic = 'PyBlox/#'
 MQTT_qos = 0
 MQTT_username = 'ruleblox'
 MQTT_password = 'ruleblox@2017#!'

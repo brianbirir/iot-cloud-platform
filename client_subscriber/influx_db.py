@@ -4,7 +4,7 @@ from influxdb import InfluxDBClient
 import json
 
 # using HTTP to connect to InfluxDB database
-db_name = 'ruleblox_production'
+db_name = 'ruleblox_test'
 db_host = '138.197.6.61'
 db_port = 8086
 db_user = 'admin'
@@ -12,6 +12,7 @@ db_password = 'ruleblox@2017#!'
 
 # instantiate influx db client
 client_db = InfluxDBClient(db_host, db_port, db_user, db_password)
+
 
 # check if DB exists, if not create it
 def check_DB():
@@ -27,13 +28,16 @@ def check_DB():
 
     client_db.switch_database(db_name)
 
+
 # store sensor data
-def sensor_data_handler(sensorData):
+def sensor_data_handler(sensor_data):
     # parse the json data
-    json_Dict = json.loads(sensorData)
+    json_Dict = json.loads(sensor_data)
     SensorID = json_Dict['Sensor_ID']
     Temperature = json_Dict['Temperature']
     Humidity = json_Dict['Humidity']
+    LampState = json_Dict['LampState']
+    AmbientLightState = json_Dict['AmbientLightState']
 
     # json data
     json_body = [
@@ -43,8 +47,10 @@ def sensor_data_handler(sensorData):
                 "device_id": SensorID,
             },
             "fields": {
-                "temperture": Temperature,
-                "humidity": Humidity
+                "temperature": Temperature,
+                "humidity": Humidity,
+                "lamp_state": LampState,
+                "ambient_light_intensity": AmbientLightState,
             }
         }
     ]
@@ -57,9 +63,6 @@ def sensor_data_handler(sensorData):
 
 
 # function to collect data from subscriber
-def sensor_handler(topic, jsonSensorData):
+def sensor_handler(json_sensor_data):
 
-    #if topic == 'Room/Si7021':
-    sensor_data_handler(jsonSensorData)
-    #else:
-        #print "No topic to subscribe to!"
+    sensor_data_handler(json_sensor_data)
