@@ -43,7 +43,7 @@ def sensor_data_handler(sensor_data):
     # json data
     json_body = [
         {
-            "measurement": "room",
+            "measurement": "pyblox",
             "tags": {
                 "device_id": SensorID,
             },
