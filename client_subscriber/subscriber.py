@@ -1,7 +1,8 @@
 # this module subscribes to topic payloads sent by gateway MQTT client publisher
 
 import paho.mqtt.client as mqtt
-from influx_db import sensor_handler
+#from influx_db import sensor_handler
+from mysql_db import sensor_handler
 
 # MQTT Settings
 MQTT_Broker = 'localhost'
@@ -28,7 +29,7 @@ def on_message(mqtt_client, userdata, msg):
     print "MQTT Data Received..."
     print "MQTT Topic: " + str(msg.topic)
     print "Data: " + str(msg.payload)
-    sensor_handler(msg.payload)
+    sensor_handler(msg.topic,msg.payload)
 
 
 def on_subscribe(mqtt_client, userdata, mid, granted_qos):

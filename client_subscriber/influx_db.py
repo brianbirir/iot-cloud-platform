@@ -28,7 +28,6 @@ def check_db():
 
     client_db.switch_database(db_name)
 
-
 # store sensor data
 def sensor_data_handler(sensor_data):
 
