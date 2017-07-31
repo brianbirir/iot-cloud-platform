@@ -5,7 +5,7 @@ import paho.mqtt.client as mqtt
 from mysql_db import sensor_handler
 
 # MQTT Settings
-MQTT_Broker = 'localhost'
+MQTT_Broker = '127.0.0.1'
 MQTT_Port = 1883
 Keep_Alive_Interval = 60
 MQTT_Topic = 'PyBlox/#'
