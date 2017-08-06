@@ -4,14 +4,15 @@ from influxdb import InfluxDBClient
 import json
 
 # using HTTP to connect to InfluxDB database
-db_name = 'ruleblox'
-db_host = '127.0.0.1'
+db_name = 'ruleblox_test'
+db_host = '138.197.6.61'
 db_port = 8086
 db_user = 'admin'
 db_password = 'ruleblox@2017#!'
 
 # instantiate influx db client
 client_db = InfluxDBClient(db_host, db_port, db_user, db_password)
+
 
 # check if DB exists, if not create it
 def check_db():
@@ -27,13 +28,16 @@ def check_db():
 
     client_db.switch_database(db_name)
 
-
-def sensor_handler(sensor_topic,sensor_data):
+# store sensor data
+def sensor_data_handler(sensor_data):
 
     # parse the json data
-    json_sensor_data = json.dumps(sensor_data)
-    SensorID = sensor_topic
-    SensorData = json_sensor_data
+    json_Dict = json.loads(sensor_data)
+    SensorID = json_Dict['Sensor_ID']
+    Temperature = json_Dict['Temperature']
+    Humidity = json_Dict['Humidity']
+    LampState = json_Dict['LampState']
+    AmbientLightState = json_Dict['AmbientLightState']
 
     # json data
     json_body = [
@@ -43,7 +47,10 @@ def sensor_handler(sensor_topic,sensor_data):
                 "device_id": SensorID,
             },
             "fields": {
-                "sensor_data": SensorData,
+                "temperature": Temperature,
+                "humidity": Humidity,
+                "lamp_state": LampState,
+                "ambient_light_intensity": AmbientLightState,
             }
         }
     ]
@@ -52,5 +59,10 @@ def sensor_handler(sensor_topic,sensor_data):
     check_db()
 
     # write points
-    print("Save to database")
     client_db.write_points(json_body)
+
+
+# function to collect data from subscriber
+def sensor_handler(json_sensor_data):
+
+    sensor_data_handler(json_sensor_data)
