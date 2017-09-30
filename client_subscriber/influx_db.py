@@ -2,6 +2,7 @@
 
 from influxdb import InfluxDBClient
 import json
+from pprint import pprint
 
 # using HTTP to connect to InfluxDB database
 db_name = 'ruleblox'
@@ -28,29 +29,33 @@ def check_db():
     client_db.switch_database(db_name)
 
 
-def sensor_handler(sensor_topic,sensor_data):
+def sensor_handler(sensor_data):
 
     # parse the json data
-    json_sensor_data = json.dumps(sensor_data)
-    SensorID = sensor_topic
-    SensorData = json_sensor_data
+    json_sensor_data = json.loads(sensor_data)
+
+    #for key in json_sensor_data:
+    SensorID = json_sensor_data['Sensor_ID']
+    SensorData = json_sensor_data['Sensor_Data']
 
     # json data
     json_body = [
         {
-            "measurement": "pyblox",
-            "tags": {
-                "device_id": SensorID,
+            "measurement":"pyblox",
+            "tags":{
+                "device_id":SensorID,
             },
-            "fields": {
-                "sensor_data": SensorData,
+            "fields":{
+                "sensor_data":SensorData,
             }
         }
     ]
 
+    pprint(json.dumps(json_body))
+
     # check database existence
-    check_db()
+    # check_db()
 
     # write points
-    print("Save to database")
-    client_db.write_points(json_body)
+    # print("Save to database")
+    # client_db.write_points(json_body)
