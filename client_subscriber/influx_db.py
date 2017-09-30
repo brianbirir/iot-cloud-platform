@@ -1,8 +1,8 @@
 # this module pushes data from the subscriber to Influx DB
-
 from influxdb import InfluxDBClient
 import json
 from pprint import pprint
+import re # for regular expressions matching
 
 # using HTTP to connect to InfluxDB database
 db_name = 'ruleblox'
@@ -29,21 +29,19 @@ def check_db():
     client_db.switch_database(db_name)
 
 
-def sensor_handler(sensor_data):
+def sensor_handler(sensor_topic,sensor_data):
 
     # parse the json data
     json_sensor_data = json.loads(sensor_data)
-
-    #for key in json_sensor_data:
-    SensorID = json_sensor_data['Sensor_ID']
-    SensorData = json_sensor_data['Sensor_Data']
+    SensorID = str(json_sensor_data['ID'])
+    SensorData = json.dumps(json_sensor_data['Data'])
 
     # json data
     json_body = [
         {
-            "measurement":"pyblox",
+            "measurement":sensor_topic,
             "tags":{
-                "device_id":SensorID,
+                "device_id":re.sub('[!@#$:]', '', SensorID),# remove colons from MAC Address value
             },
             "fields":{
                 "sensor_data":SensorData,
@@ -51,11 +49,11 @@ def sensor_handler(sensor_data):
         }
     ]
 
-    pprint(json.dumps(json_body))
+    # pprint(json.dumps(json_body))
 
     # check database existence
-    # check_db()
+    check_db()
 
     # write points
-    # print("Save to database")
-    # client_db.write_points(json_body)
+    print("Save to database")
+    client_db.write_points(json_body)
