@@ -56,4 +56,4 @@ def sensor_handler(sensor_topic,sensor_data):
 
     # write points
     print("Save to database")
-    client_db.write_points(json_body)
+    client_db.write_points(json_body,time_precision='s')
