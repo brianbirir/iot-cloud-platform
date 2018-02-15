@@ -1,0 +1,25 @@
+{
+  "general":{
+      "broker_port":1883,
+      "broker_keep_alive":60
+  },
+  "env":{
+    "thingspeak":{
+      "broker_address":"mqtt.thingspeak.com",
+      "qos":0,
+      "connection_retain":0,
+      "clean_session":1,
+      "write_api":"L9D4X3ODQ87C2P52",
+      "channel_id":"267307"
+    },
+    "cayenne":{
+      "broker_address":"mqtt.mydevices.com",
+      "broker_port":1883,
+      "username": "2e6771f0-bffa-11e7-96e0-ed3a4c51948a",
+      "password": "b900b3cea772d04bfc8cc6dd609e77a4e7067c0d",
+      "channel": "",
+      "client_id": "a2523f00-c4a0-11e7-96e0-ed3a4c51948a",
+      "qos": 0
+    }
+  }
+}
