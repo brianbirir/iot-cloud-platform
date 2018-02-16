@@ -1,7 +1,7 @@
 # this module subscribes to topic payloads sent by gateway MQTT client publisher
 import paho.mqtt.client as mqtt
 from influx_db import sensor_handler
-from cayenne_publisher.client import connect_broker
+from cayenne_publisher.publish import publish_cayenne
 
 # MQTT Settings
 MQTT_Broker = 'localhost'
@@ -33,7 +33,7 @@ def on_message(mqtt_client, userdata, msg):
     sensor_handler(msg.topic,msg.payload)
 
     # send data to cayenne server
-    connect_broker(msg.payload)
+    publish_cayenne(msg.payload)
 
 
 def on_subscribe(mqtt_client, userdata, mid, granted_qos):

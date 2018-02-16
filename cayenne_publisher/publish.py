@@ -2,52 +2,62 @@ from __future__ import print_function
 import paho.mqtt.publish as publish
 import time
 import json
-import os
 
-# get config current file path
-config_file_path = os.path.dirname(os.path.abspath(__file__))
-
-print(config_file_path)
-
-# get Temperature and Humidity values
-# cTemp = sensor.getTemperature()['cTemp']
-# cHumidity = sensor.getHumdity()
 
 
 # get configuration
 def get_configs():
-    with open(config_file_path + '/' +'config.json') as json_data_file:
-        config = json.load(json_data_file)
+    with open("./config.json") as config_file:
+        config = json.load(config_file)
     return config
 
 
-def publish(data):
-    # connection_configuration
-    general_conf = get_configs()['general']
+# connection_configuration
+general_conf = get_configs()['general']
 
-    # get thingspeak configuration
-    cayenne_conf = get_configs()['env']['cayenne']
+# get cayenne configuration
+cayenne_conf = get_configs()['env']['cayenne_test']
 
-    # payload string
-    # cayenne_payload = 'field1=' + str(cTemp) + '&field2=' + str(cHumidity)
+'''
+cayenne server topic format: 
 
-    '''
-    
-    cayenne server topic format: 
-    
-    /v1/username/things/clientID/data/channel
-    
-    '''
-    cayenne_topic = 'v1/'+ cayenne_conf['username'] + '/things/' + cayenne_conf['client_id'] + '/data/' + cayenne_conf['channel']
+v1/username/things/clientID/data/channel
+'''
+cayenne_topic = 'v1/' + cayenne_conf['username'] + '/things/' + cayenne_conf['client_id'] + '/data/'
 
-    # print temperature and humidity output
-    print (" Temperature =",str(cTemp),"   Humidity =",str(cHumidity))
+
+def publish_cayenne(payload):
 
     # attempt to publish this data to the topic 
     try:
-        print ("Publishing data")
-        publish.single(thingspeak_topic, cayenne_payload, cayenne_conf['qos'], retain=False, hostname=cayenne_conf['broker_address'], port=general_conf['broker_port'], keepalive=general_conf['broker_keep_alive'])
-        time.sleep(3)
+        print ("Publishing data to Cayenne")
+        parsed_payload = json.loads(payload)
+
+        '''
+        cayenne payload should be in the form of:
+
+        type,unit=value
+
+        '''
+
+        mqtt_auth = {'username':cayenne_conf['username'], 'password':cayenne_conf['password']}
+
+        for key, value in parsed_payload.iteritems():
+            if key == 'rel_hum':
+                hum_payload = key + ',p=' + str(value)
+                hum_topic = cayenne_topic + "4"
+                publish.single(hum_topic+"4", payload=hum_payload, qos=cayenne_conf['qos'], retain=False, hostname=cayenne_conf['broker_address'],
+                               port=general_conf['broker_port'], client_id="", keepalive=general_conf['broker_keep_alive'], auth=mqtt_auth)
+
+            if key == 'temp':
+                temp_payload = key + ',t=' + str(value)
+                temp_topic = cayenne_topic + "5"
+                publish.single(temp_topic, payload=temp_payload, qos=cayenne_conf['qos'], retain=False,
+                               hostname=cayenne_conf['broker_address'],
+                               port=general_conf['broker_port'], client_id="",
+                               keepalive=general_conf['broker_keep_alive'], auth=mqtt_auth)
+
+        print("Publishing completed")
 
     except KeyboardInterrupt:
         print ("Keyboard interrupt")
