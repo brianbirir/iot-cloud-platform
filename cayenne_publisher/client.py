@@ -1,5 +1,4 @@
-# This MQTT client runs on a Raspberry Pi Gateway
-# The gateway is connected to the temp-humidity sensor (Si7021)
+# This echoes the data received by the Ruleblox MQTT server to Cayenne server in mydevices.com
 
 import paho.mqtt.client as mqtt
 import time
@@ -33,7 +32,7 @@ cayenne server topic format:
     
 v1/username/things/clientID/data/channel
 '''
-cayenne_topic = 'v1/'+ cayenne_conf['username'] + '/things/' + cayenne_conf['client_id'] + '/data/' + cayenne_conf['channel']
+cayenne_topic = 'v1/'+ cayenne_conf['username'] + '/things/' + cayenne_conf['client_id'] + '/data/'
 
 
 # subscribe to topic
@@ -51,17 +50,25 @@ def publish_to_topic(topic, msg, qos):
 
 # collect payload data as JSON and publish
 def pub_payload(payload):
-    Sensor_Data = {}
-    Sensor_Data['Sensor_ID'] = "Si7021"
-    Sensor_Data['Humidity'] = cHumidity
-    Sensor_Data['Temperature'] = cTemp
-    sensor_json_data = json.dumps(Sensor_Data)
 
-    print "Publishing " + Sensor_Data['Sensor_ID'] + " sensor data: " + str(cHumidity) + "..." + str(cTemp) + "..."
+    parsed_payload = json.loads(payload)
 
-    # subscribe_to_topic(cayenne_topic, cayenne_conf['qos'])
+    '''
+    cayenne payload should be in the form of:
 
-    publish_to_topic(cayenne_topic, payload, cayenne_conf['qos'])
+    type,unit=value
+
+    '''
+
+    for key, value in parsed_payload.iteritems():
+        if key == 'rel_hum':
+            hum_payload = key + ',p=' + str(value)
+            publish_to_topic(cayenne_topic+"4", hum_payload, cayenne_conf['qos'])
+
+        if key == 'temp':
+            temp_payload = key + ',t=' + str(value)
+            publish_to_topic(cayenne_topic+"5", temp_payload, cayenne_conf['qos'])
+
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -96,7 +103,7 @@ def on_log(client, userdata, level, buf):
 
 
 # connect to broker and send data
-def connect_to_broker(payload):
+def connect_broker(payload):
 
     # flags
     mqtt.Client.connected_flag = False
