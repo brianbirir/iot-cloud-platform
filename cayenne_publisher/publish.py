@@ -53,8 +53,9 @@ def publish_cayenne(payload):
 
         # mqtt_auth = {'username':cayenne_conf['username'], 'password':cayenne_conf['password']}
 
-        for key, value in parsed_payload.iteritems():
+        for key, value in parsed_payload['Data'].iteritems():
             if key == 'rel_hum':
+                print("Publishing Temperature")
                 hum_payload = key + ',p=' + str(value)
                 hum_topic = cayenne_topic + "1"
                 #publish.single(hum_topic, payload=hum_payload, qos=cayenne_conf['qos'], retain=False, hostname=cayenne_conf['broker_address'], port=general_conf['broker_port'], client_id="", keepalive=general_conf['broker_keep_alive'], auth=mqtt_auth)
@@ -62,6 +63,7 @@ def publish_cayenne(payload):
                 print("Published Temperature")
 
             if key == 'temp':
+                print("Publishing Humidity")
                 temp_payload = key + ',t=' + str(value)
                 temp_topic = cayenne_topic + "2"
                 #publish.single(temp_topic, payload=temp_payload, qos=cayenne_conf['qos'], retain=False, hostname=cayenne_conf['broker_address'], port=general_conf['broker_port'], client_id="",keepalive=general_conf['broker_keep_alive'], auth=mqtt_auth)
