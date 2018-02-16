@@ -2,6 +2,7 @@ from __future__ import print_function
 import paho.mqtt.publish as publish
 import time
 import json
+import cayenne.client
 
 
 # get configuration
@@ -26,7 +27,17 @@ cayenne_topic = 'v1/' + cayenne_conf['username'] + '/things/' + cayenne_conf['cl
 
 print(cayenne_topic)
 
+client = cayenne.client.CayenneMQTTClient()
+
+def on_message(message):
+  print("message received: " + str(message))
+  # If there is an error processing the message return an error string, otherwise return nothing.
+
+
 def publish_cayenne(payload):
+
+    client.on_message = on_message
+    client.begin(cayenne_conf['username'], cayenne_conf['password'], cayenne_conf['client_id'])
 
     # attempt to publish this data to the topic 
     try:
@@ -40,24 +51,21 @@ def publish_cayenne(payload):
 
         '''
 
-        mqtt_auth = {'username':cayenne_conf['username'], 'password':cayenne_conf['password']}
+        # mqtt_auth = {'username':cayenne_conf['username'], 'password':cayenne_conf['password']}
 
         for key, value in parsed_payload.iteritems():
             if key == 'rel_hum':
                 hum_payload = key + ',p=' + str(value)
                 hum_topic = cayenne_topic + "1"
-                publish.single(hum_topic, payload=hum_payload, qos=cayenne_conf['qos'], retain=False, hostname=cayenne_conf['broker_address'],
-                               port=general_conf['broker_port'], client_id="", keepalive=general_conf['broker_keep_alive'], auth=mqtt_auth)
+                #publish.single(hum_topic, payload=hum_payload, qos=cayenne_conf['qos'], retain=False, hostname=cayenne_conf['broker_address'], port=general_conf['broker_port'], client_id="", keepalive=general_conf['broker_keep_alive'], auth=mqtt_auth)
+                client.mqttPublish(hum_payload, hum_topic)
                 print("Published Temperature")
 
             if key == 'temp':
                 temp_payload = key + ',t=' + str(value)
                 temp_topic = cayenne_topic + "2"
-                publish.single(temp_topic, payload=temp_payload, qos=cayenne_conf['qos'], retain=False,
-                               hostname=cayenne_conf['broker_address'],
-                               port=general_conf['broker_port'], client_id="",
-                               keepalive=general_conf['broker_keep_alive'], auth=mqtt_auth)
-
+                #publish.single(temp_topic, payload=temp_payload, qos=cayenne_conf['qos'], retain=False, hostname=cayenne_conf['broker_address'], port=general_conf['broker_port'], client_id="",keepalive=general_conf['broker_keep_alive'], auth=mqtt_auth)
+                client.mqttPublish(temp_payload, temp_topic)
                 print("Published Humidity")
 
         print("Publishing completed")
