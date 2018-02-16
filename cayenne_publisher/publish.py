@@ -59,7 +59,7 @@ def publish_cayenne(payload):
                 hum_payload = key + ',p=' + str(value)
                 hum_topic = cayenne_topic + "1"
                 #publish.single(hum_topic, payload=hum_payload, qos=cayenne_conf['qos'], retain=False, hostname=cayenne_conf['broker_address'], port=general_conf['broker_port'], client_id="", keepalive=general_conf['broker_keep_alive'], auth=mqtt_auth)
-                client.mqttPublish(hum_payload, hum_topic)
+                client.mqttPublish(hum_topic, hum_payload)
                 print("Published Temperature")
 
             if key == 'temp':
@@ -67,7 +67,7 @@ def publish_cayenne(payload):
                 temp_payload = key + ',t=' + str(value)
                 temp_topic = cayenne_topic + "2"
                 #publish.single(temp_topic, payload=temp_payload, qos=cayenne_conf['qos'], retain=False, hostname=cayenne_conf['broker_address'], port=general_conf['broker_port'], client_id="",keepalive=general_conf['broker_keep_alive'], auth=mqtt_auth)
-                client.mqttPublish(temp_payload, temp_topic)
+                client.mqttPublish(temp_topic, temp_payload)
                 print("Published Humidity")
 
         print("Publishing completed")
