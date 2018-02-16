@@ -4,10 +4,9 @@ import time
 import json
 
 
-
 # get configuration
 def get_configs():
-    with open("./config.json") as config_file:
+    with open("../config.json") as config_file:
         config = json.load(config_file)
     return config
 
@@ -25,12 +24,13 @@ v1/username/things/clientID/data/channel
 '''
 cayenne_topic = 'v1/' + cayenne_conf['username'] + '/things/' + cayenne_conf['client_id'] + '/data/'
 
+print(cayenne_topic)
 
 def publish_cayenne(payload):
 
     # attempt to publish this data to the topic 
     try:
-        print ("Publishing data to Cayenne")
+        print("Publishing data to Cayenne")
         parsed_payload = json.loads(payload)
 
         '''
@@ -46,7 +46,7 @@ def publish_cayenne(payload):
             if key == 'rel_hum':
                 hum_payload = key + ',p=' + str(value)
                 hum_topic = cayenne_topic + "4"
-                publish.single(hum_topic+"4", payload=hum_payload, qos=cayenne_conf['qos'], retain=False, hostname=cayenne_conf['broker_address'],
+                publish.single(hum_topic, payload=hum_payload, qos=cayenne_conf['qos'], retain=False, hostname=cayenne_conf['broker_address'],
                                port=general_conf['broker_port'], client_id="", keepalive=general_conf['broker_keep_alive'], auth=mqtt_auth)
 
             if key == 'temp':
@@ -60,7 +60,7 @@ def publish_cayenne(payload):
         print("Publishing completed")
 
     except KeyboardInterrupt:
-        print ("Keyboard interrupt")
+        print("Keyboard interrupt")
 
     except:
-        print ("There was an error while publishing the data.")
+        print("There was an error while publishing the data.")
