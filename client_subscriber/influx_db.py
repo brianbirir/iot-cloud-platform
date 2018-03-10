@@ -4,12 +4,19 @@ import json
 from pprint import pprint
 import re # for regular expressions matching
 
+
+# get configuration
+def get_configs():
+    with open("./config.json") as config_file:
+        config = json.load(config_file)
+    return config
+
 # using HTTP to connect to InfluxDB database
-db_name = 'ruleblox'
-db_host = '127.0.0.1'
-db_port = 8086
-db_user = 'admin'
-db_password = 'ruleblox@2017#!'
+db_name = get_configs()['influxdb']['db_name']
+db_host = get_configs()['influxdb']['db_host']
+db_port = get_configs()['influxdb']['db_port']
+db_user = get_configs()['influxdb']['db_user']
+db_password = get_configs()['influxdb']['db_password']
 
 # instantiate influx db client
 client_db = InfluxDBClient(db_host, db_port, db_user, db_password)

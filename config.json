@@ -28,5 +28,12 @@
       "client_id": "5374aa00-1331-11e8-9beb-4d400e603e7e",
       "qos": 0
     }
+  },
+  "influxdb": {
+    "db_name" : "ruleblox",
+    "db_host" : "127.0.0.1",
+    "db_port" : 8086,
+    "db_user" : "admin",
+    "db_password" : "ruleblox@2017#!"
   }
 }
