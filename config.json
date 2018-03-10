@@ -30,10 +30,10 @@
     }
   },
   "influxdb": {
-    "db_name" : "ruleblox",
-    "db_host" : "127.0.0.1",
-    "db_port" : 8086,
-    "db_user" : "admin",
-    "db_password" : "ruleblox@2017#!"
+    "name" : "ruleblox",
+    "host" : "127.0.0.1",
+    "port" : 8086,
+    "user" : "admin",
+    "password" : "ruleblox@2017#!"
   }
 }

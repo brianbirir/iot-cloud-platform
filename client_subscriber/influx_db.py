@@ -12,11 +12,11 @@ def get_configs():
     return config
 
 # using HTTP to connect to InfluxDB database
-db_name = get_configs()['influxdb']['db_name']
-db_host = get_configs()['influxdb']['db_host']
-db_port = get_configs()['influxdb']['db_port']
-db_user = get_configs()['influxdb']['db_user']
-db_password = get_configs()['influxdb']['db_password']
+db_name = get_configs()['influxdb']['name']
+db_host = get_configs()['influxdb']['host']
+db_port = get_configs()['influxdb']['port']
+db_user = get_configs()['influxdb']['user']
+db_password = get_configs()['influxdb']['password']
 
 # instantiate influx db client
 client_db = InfluxDBClient(db_host, db_port, db_user, db_password)
