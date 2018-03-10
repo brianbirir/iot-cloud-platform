@@ -23,6 +23,7 @@ cayenne server topic format:
 
 v1/username/things/clientID/data/channel
 '''
+
 cayenne_topic = 'v1/' + cayenne_conf['username'] + '/things/' + cayenne_conf['client_id'] + '/data/'
 
 print(cayenne_topic)

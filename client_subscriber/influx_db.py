@@ -33,18 +33,25 @@ def sensor_handler(sensor_topic,sensor_data):
 
     # parse the json data
     json_sensor_data = json.loads(sensor_data)
-    SensorID = str(json_sensor_data['ID'])
-    SensorData = json.dumps(json_sensor_data['Data'])
+    SensorID = str(json_sensor_data['Gateway_ID'])
+    # SensorData = json.dumps(json_sensor_data['Sensor_data'])
+    SensorData = json_sensor_data['Sensor_data']
 
     # json data
     json_body = [
         {
-            "measurement":sensor_topic,
+            "measurement":'GatewayDemo',
             "tags":{
                 "device_id":re.sub('[!@#$:]', '', SensorID),# remove colons from MAC Address value
+                "node_id": SensorData['ID'],
+                "sensor_topic": sensor_topic
             },
             "fields":{
-                "sensor_data":SensorData,
+                "RTC":SensorData['RTC'],
+                "Leak_Sensor": SensorData['LS'],
+                "Flame_Sensor": SensorData['FS'],
+                "Smoke_Sensor": SensorData['SS'],
+                "Water_Flow_Sensor": SensorData['FL']
             }
         }
     ]
