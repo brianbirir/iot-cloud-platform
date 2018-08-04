@@ -1,7 +1,7 @@
 # broker class
 
 import paho.mqtt.client as mqtt
-import utils.logger as logger
+from src.utils.logger import info_logger as logger
 from definitions import load_config
 from src.influxmodel import Influxmodel
 
