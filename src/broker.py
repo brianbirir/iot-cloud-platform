@@ -3,25 +3,30 @@
 import paho.mqtt.client as mqtt
 import utils.logger as logger
 from definitions import load_config
+from src.influxmodel import Influxmodel
 
 class Broker:
 
     def __init__(self):
-        self._broker = load_config['mqtt_broker']['url']
-        self._port = load_config['mqtt_broker']['port']
-        self._keep_alive = load_config['mqtt_broker']['keep_alive']
-        self._topic = load_config['mqtt_broker']['topic']
-        self._qos = load_config['mqtt_broker']['qos']
-        self._username = load_config['mqtt_broker']['username']
-        self._password = load_config['mqtt_broker']['password']
+        self._broker = load_config()['mqtt_broker']['url']
+        self._port = load_config()['mqtt_broker']['port']
+        self._keep_alive = load_config()['mqtt_broker']['keep_alive']
+        self._topic = load_config()['mqtt_broker']['topic']
+        self._qos = load_config()['mqtt_broker']['qos']
+        self._username = load_config()['mqtt_broker']['username']
+        self._password = load_config()['mqtt_broker']['password']
+
+        self._influxclient = Influxmodel()
 
     # callback functions for subscriber
     def on_connect(self,mqtt_client, userdata, rc):
-        print('connected...rc=' + str(rc))
+
+        logger.info_logger('connected...rc=' + str(rc))
         mqtt_client.subscribe(self._topic, self._qos)
 
     def on_disconnect(self,mqtt_client, userdata, rc):
-        print('disconnected...rc=' + str(rc))
+
+        logger.info_logger('disconnected...rc=' + str(rc))
 
     # on message collect payload and save to Influx DB database
     def on_message(self,mqtt_client, userdata, msg):
@@ -31,12 +36,11 @@ class Broker:
         logger.info_logger("Data: " + str(msg.payload))
 
         # post to InfluxDB Client
-        # sensor_handler(msg.topic, msg.payload)
-
-        # send data to cayenne server
-        # publish_cayenne(msg.payload)
+        self._influxclient.save(msg.topic,msg.payload)
+        logger.info_logger("Data saved to Influx database!")
 
     def on_subscribe(self,mqtt_client, userdata, mid, granted_qos):
+
         logger.info_logger('subscribed (qos=' + str(granted_qos) + ')')
 
     def on_log(self,client, userdata, level, buf):
@@ -50,6 +54,7 @@ class Broker:
         mqtt_c.on_message = self.on_message
         mqtt_c.on_connect = self.on_connect
         mqtt_c.on_subscribe = self.on_subscribe
+        mqtt_c.on_disconnect = self.on_disconnect
         mqtt_c.on_log = self.on_log
 
         # connect client with authentication

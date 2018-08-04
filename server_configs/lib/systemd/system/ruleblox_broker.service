@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/bin/python /root/client_subscriber/run.py /root/ruleblox_broker.log 2>&1
+ExecStart=/usr/bin/python /root/mqtt_broker/run.py > /root/mqtt_broker.log 2>&1
 Restart=always
 RestartSec=3
 
