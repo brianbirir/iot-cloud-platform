@@ -1,18 +1,18 @@
 {
   "influxdb": {
-    "db_name" : "ruleblox",
-    "host" : "127.0.0.1",
+    "db_name" : "",
+    "host" : "",
     "port" : 8086,
-    "user" : "admin",
-    "password" : "ruleblox@2017#!"
+    "user" : "",
+    "password" : ""
   },
   "mqtt_broker": {
     "url": "",
     "port": 1883,
-    "topic": "pyblox/#",
+    "topic": "",
     "qos": 0,
     "keep_alive": 60,
-    "username": "ruleblox",
-    "password": "ruleblox@2017#!"
+    "username": "",
+    "password": ""
   }
 }
