@@ -43,10 +43,11 @@ def on_subscribe(mqtt_client, userdata, mid, granted_qos):
 def on_log(client, userdata, level, buf):
     print("log: ",buf)
 
-
+# connect to broker
 def connect_to_broker():
+
     # initiate mqtt client
-    mqtt_c  = mqtt.Client()
+    mqtt_c = mqtt.Client()
 
     # register event handlers
     mqtt_c.on_message = on_message
