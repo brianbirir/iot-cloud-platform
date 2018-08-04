@@ -11,22 +11,6 @@
       "clean_session":1,
       "write_api":"L9D4X3ODQ87C2P52",
       "channel_id":"267307"
-    },
-    "cayenne":{
-      "broker_address":"mqtt.mydevices.com",
-      "broker_port":1883,
-      "username": "2e6771f0-bffa-11e7-96e0-ed3a4c51948a",
-      "password": "b900b3cea772d04bfc8cc6dd609e77a4e7067c0d",
-      "client_id": "a2523f00-c4a0-11e7-96e0-ed3a4c51948a",
-      "qos": 0
-    },
-    "cayenne_test": {
-      "broker_address":"mqtt.mydevices.com",
-      "broker_port":1883,
-      "username": "26bdf450-128a-11e8-b1c6-0d0b749c9848",
-      "password": "4cb6f88ac8698a6c49ac56e653ec816824b7de02",
-      "client_id": "5374aa00-1331-11e8-9beb-4d400e603e7e",
-      "qos": 0
     }
   },
   "influxdb": {
