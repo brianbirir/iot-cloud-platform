@@ -1,10 +1,10 @@
 [Unit]
-Description=My Script Service
+Description=Broker Subscriber Service
 After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/bin/python /root/mqtt_broker/run.py > /root/mqtt_broker.log 2>&1
+ExecStart=/usr/bin/python /root/mqtt_subscriber/__init__.py
 Restart=always
 RestartSec=3
 
