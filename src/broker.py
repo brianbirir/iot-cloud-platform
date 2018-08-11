@@ -1,65 +1,83 @@
-# broker class
-
+# broker subscriber
 import paho.mqtt.client as mqtt
-from src.utils.logger import info_logger as logger
+from src.utils.logger import info_logger
 from definitions import load_config
 from src.influxmodel import Influxmodel
 
-class Broker:
 
-    def __init__(self):
-        self._broker = load_config()['mqtt_broker']['url']
-        self._port = load_config()['mqtt_broker']['port']
-        self._keep_alive = load_config()['mqtt_broker']['keep_alive']
-        self._topic = load_config()['mqtt_broker']['topic']
-        self._qos = load_config()['mqtt_broker']['qos']
-        self._username = load_config()['mqtt_broker']['username']
-        self._password = load_config()['mqtt_broker']['password']
+# parameters
+broker = load_config()['mqtt_broker']['url']
+port = load_config()['mqtt_broker']['port']
+keep_alive = load_config()['mqtt_broker']['keep_alive']
+topic = load_config()['mqtt_broker']['topic']
+qos = load_config()['mqtt_broker']['qos']
+username = load_config()['mqtt_broker']['username']
+password = load_config()['mqtt_broker']['password']
 
-        self._influxclient = Influxmodel()
+influx_c = Influxmodel()
 
-    # callback functions for subscriber
-    def on_connect(self,mqtt_client, userdata, rc):
 
-        logger.info_logger('connected...rc=' + str(rc))
-        mqtt_client.subscribe(self._topic, self._qos)
+# callback functions for subscriber
+def on_connect(mqtt_client, userdata, flags, rc):
 
-    def on_disconnect(self,mqtt_client, userdata, rc):
+    returnCode = {
+        0: "Connection successful",
+        1: "Connection refused – incorrect protocol version",
+        2: "Connection refused – invalid client identifier",
+        3: "Connection refused – server unavailable",
+        4: "Connection refused – bad username or password",
+        5: "Connection refused – not authorised"
+    }
 
-        logger.info_logger('disconnected...rc=' + str(rc))
+    info_logger(returnCode.get(rc,"unable to identify return code error!"))
 
-    # on message collect payload and save to Influx DB database
-    def on_message(self,mqtt_client, userdata, msg):
+    if rc == 0:
 
-        logger.info_logger("MQTT Data Received...")
-        logger.info_logger("MQTT Topic: " + str(msg.topic))
-        logger.info_logger("Data: " + str(msg.payload))
+        mqtt_client.subscribe(topic, qos)
 
-        # post to InfluxDB Client
-        self._influxclient.save(msg.topic,msg.payload)
-        logger.info_logger("Data saved to Influx database!")
 
-    def on_subscribe(self,mqtt_client, userdata, mid, granted_qos):
+def on_disconnect(mqtt_client, userdata, rc):
 
-        logger.info_logger('subscribed (qos=' + str(granted_qos) + ')')
+    info_logger('disconnected...rc=' + str(rc))
 
-    def on_log(self,client, userdata, level, buf):
-        logger.info_logger(buf)
 
-    def connect_to_broker(self):
-        # initiate mqtt client
-        mqtt_c = mqtt.Client()
+# on message collect payload and save to Influx DB database
+def on_message(mqtt_client, userdata, msg):
 
-        # register event handlers
-        mqtt_c.on_message = self.on_message
-        mqtt_c.on_connect = self.on_connect
-        mqtt_c.on_subscribe = self.on_subscribe
-        mqtt_c.on_disconnect = self.on_disconnect
-        mqtt_c.on_log = self.on_log
+    info_logger("MQTT Data Received...")
+    info_logger("MQTT Topic: " + str(msg.topic))
+    info_logger("Data: " + str(msg.payload))
 
-        # connect client with authentication
-        mqtt_c.username_pw_set(self._username, self._password)
-        mqtt_c.connect(self._broker, self._port, self._keep_alive)
+    # post to InfluxDB Client
+    influx_c.save(msg.topic,msg.payload)
+    info_logger("Data saved to Influx database!")
 
-        # loop forever
-        mqtt_c.loop_forever()
+
+def on_subscribe(mqtt_client, userdata, mid, granted_qos):
+
+    info_logger('subscribed (qos=' + str(granted_qos) + ')')
+
+
+def on_log(client, userdata, level, buf):
+
+    info_logger(buf)
+
+
+def connect_to_broker():
+
+    # initiate mqtt client
+    mqtt_c = mqtt.Client()
+
+    # register event handlers
+    mqtt_c.on_message = on_message
+    mqtt_c.on_connect = on_connect
+    mqtt_c.on_subscribe = on_subscribe
+    mqtt_c.on_disconnect = on_disconnect
+    mqtt_c.on_log = on_log
+
+    # connect client with authentication
+    mqtt_c.username_pw_set(username, password)
+    mqtt_c.connect(broker, port, keep_alive)
+
+    # loop forever
+    mqtt_c.loop_forever()

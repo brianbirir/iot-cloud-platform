@@ -39,7 +39,7 @@ class Influxmodel:
         # parse the json data
         json_sensor_data = json.loads(sensor_data)
         id = str(json_sensor_data['Gateway_ID'])
-        data = json_sensor_data['Sensor_data']
+        data = str(json_sensor_data['Sensor_data'])
 
         json_body = [
             {
