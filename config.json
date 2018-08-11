@@ -4,7 +4,7 @@
     "host" : "127.0.0.1",
     "port" : 8086,
     "user" : "admin",
-    "password" : "ruleblox"
+    "password" : "ruleblox@2017#!"
   },
   "mqtt_broker": {
     "url": "127.0.0.1",
@@ -13,6 +13,6 @@
     "qos": 0,
     "keep_alive": 60,
     "username": "ruleblox",
-    "password": "breal1985"
+    "password": "ruleblox@2017#!"
   }
 }

@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/bin/python /root/mqtt_subscriber/__init__.py
+ExecStart=/usr/bin/python /var/www/mqtt_subscriber/__init__.py
 Restart=always
 RestartSec=3
 
