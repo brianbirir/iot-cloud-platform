@@ -1,0 +1,18 @@
+{
+  "influxdb": {
+    "db_name" : "",
+    "host" : "",
+    "port" : 8086,
+    "user" : "",
+    "password" : ""
+  },
+  "mqtt_broker": {
+    "url": "",
+    "port": 1883,
+    "topic": "",
+    "qos": 0,
+    "keep_alive": 60,
+    "username": "",
+    "password": ""
+  }
+}
