@@ -2,7 +2,7 @@ import logging
 
 # logging
 logger = logging.getLogger('ruleblox_broker')
-hdlr = logging.FileHandler('/var/tmp/ruleblox_broker.log')
+hdlr = logging.FileHandler('/tmp/iot_broker.log')
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
