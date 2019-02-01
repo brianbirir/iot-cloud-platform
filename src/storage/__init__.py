@@ -6,7 +6,7 @@ import re
 from src.utils.logger import info_logger
 
 
-class Influxmodel:
+class InfluxStore:
 
     def __init__(self):
 
@@ -59,4 +59,3 @@ class Influxmodel:
         # write points to database
         info_logger("Saved to database")
         self._client.write_points(json_body, time_precision='s')
-

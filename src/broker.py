@@ -2,7 +2,7 @@
 import paho.mqtt.client as mqtt
 from src.utils.logger import info_logger
 from definitions import load_config
-from src.influxmodel import Influxmodel
+from src.storage import InfluxStore
 
 
 # parameters
@@ -14,7 +14,7 @@ qos = load_config()['mqtt_broker']['qos']
 username = load_config()['mqtt_broker']['username']
 password = load_config()['mqtt_broker']['password']
 
-influx_c = Influxmodel()
+influx_c = InfluxStore()
 
 
 # callback functions for subscriber
@@ -50,6 +50,7 @@ def on_message(mqtt_client, userdata, msg):
 
     # post to InfluxDB Client
     influx_c.save(msg.topic,msg.payload)
+
     info_logger("Data saved to Influx database!")
 
 
