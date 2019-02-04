@@ -34,18 +34,20 @@ class InfluxStore:
             self._client.switch_database(self._dbname)
 
     # save data to influxDB
-    def save(self,sensor_topic, sensor_data):
+    def save(self, sensor_topic, sensor_data):
 
         # parse the json data
         json_sensor_data = json.loads(sensor_data)
-        id = str(json_sensor_data['Gateway_ID'])
-        data = str(json_sensor_data['Sensor_data'])
+        device_id = str(json_sensor_data['device_id'])
+        mac_address = str(json_sensor_data['device_mac_address'])
+        data = str(json_sensor_data['device_data'])
 
         json_body = [
             {
                 "measurement": sensor_topic,
                 "tags": {
-                    "device_id": re.sub('[!@#$:]', '', id),  # remove colons from MAC Address value
+                    "device_id": re.sub('[!@#$:]', '', device_id),  # remove colons from MAC Address value
+                    "device_mac_address": device_mac_address
                 },
                 "fields": {
                     "feeds": data
