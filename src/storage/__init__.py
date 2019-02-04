@@ -46,8 +46,8 @@ class InfluxStore:
             {
                 "measurement": sensor_topic,
                 "tags": {
-                    "device_id": re.sub('[!@#$:]', '', device_id),  # remove colons from MAC Address value
-                    "device_mac_address": device_mac_address
+                    "device_id": device_id,
+                    "device_mac_address": re.sub('[!@#$:]', '', device_mac_address) # remove colons from MAC Address value
                 },
                 "fields": {
                     "feeds": data
