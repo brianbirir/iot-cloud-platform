@@ -27,9 +27,12 @@ class InfluxStore:
 
         # check if current database exists and if not create it
         if self._dbname  not in [str(x['name']) for x in all_dbs_list]:
+
             info_logger("Creating db {0}".format(self._dbname ))
             self._client.create_database(self._dbname)
+
         else:
+            
             info_logger("Reusing db {0}".format(self._dbname))
             self._client.switch_database(self._dbname)
 
