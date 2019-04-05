@@ -1,6 +1,6 @@
 # broker subscriber
 import paho.mqtt.client as mqtt
-from src.utils.logger import info_logger
+from src.lib.logger import info_logger
 from definitions import load_config
 from src.storage import InfluxStore
 

@@ -3,7 +3,7 @@ from influxdb import InfluxDBClient
 from definitions import load_config
 import json
 import re
-from src.utils.logger import info_logger
+from src.lib.logger import info_logger
 
 
 class InfluxStore:
