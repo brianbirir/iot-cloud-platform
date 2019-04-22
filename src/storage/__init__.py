@@ -1,21 +1,19 @@
 # this module stores data in Influx DB from the subscriber
 from influxdb import InfluxDBClient
-from definitions import load_config
+from config import load_config
 import json
 import re
 from src.lib.logger import info_logger
 
 
 class InfluxStore:
-
+    
     def __init__(self):
-
         self._host = load_config()['influxdb']['host']
         self._port = load_config()['influxdb']['port']
         self._dbname = load_config()['influxdb']['db_name']
         self._password = load_config()['influxdb']['password']
         self._user = load_config()['influxdb']['user']
-
         # instantiate influx db client
         self._client = InfluxDBClient(self._host, self._port, self._user, self._password)
 
@@ -27,12 +25,9 @@ class InfluxStore:
 
         # check if current database exists and if not create it
         if self._dbname  not in [str(x['name']) for x in all_dbs_list]:
-
             info_logger("Creating db {0}".format(self._dbname ))
             self._client.create_database(self._dbname)
-
         else:
-            
             info_logger("Reusing db {0}".format(self._dbname))
             self._client.switch_database(self._dbname)
 
@@ -50,7 +45,7 @@ class InfluxStore:
                 "measurement": sensor_topic,
                 "tags": {
                     "device_id": device_id,
-                    "device_mac_address": re.sub('[!@#$:]', '', device_mac_address) # remove colons from MAC Address value
+                    "device_mac_address": re.sub('[!@#$:]', '', mac_address) # remove colons from MAC Address value
                 },
                 "fields": {
                     "feeds": data

@@ -1,7 +1,7 @@
 # broker subscriber
 import paho.mqtt.client as mqtt
 from src.lib.logger import info_logger
-from definitions import load_config
+from config import load_config
 from src.storage import InfluxStore
 
 
@@ -20,7 +20,7 @@ influx_c = InfluxStore()
 # callback functions for subscriber
 def on_connect(mqtt_client, userdata, flags, rc):
 
-    returnCode = {
+    return_code = {
         0: "Connection successful",
         1: "Connection refused – incorrect protocol version",
         2: "Connection refused – invalid client identifier",
@@ -29,7 +29,7 @@ def on_connect(mqtt_client, userdata, flags, rc):
         5: "Connection refused – not authorised"
     }
 
-    info_logger(returnCode.get(rc,"unable to identify return code error!"))
+    info_logger(return_code.get(rc,"unable to identify return code error!"))
 
     if rc == 0:
 
