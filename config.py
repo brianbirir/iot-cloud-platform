@@ -1,6 +1,23 @@
 import os
 import json
 
+class Config:
+    pass
+
+
+class DevelopmentConfig(Config):
+    pass
+
+
+class ProductionConfig(Config):
+    pass
+
+
+config = {
+    'development': DevelopmentConfig,
+    'production': ProductionConfig
+}
+
 # load config file and return application configs
 def load_config():
 
