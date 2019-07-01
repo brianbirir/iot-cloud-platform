@@ -20,3 +20,4 @@ class Config:
     BROKER_USERNAME = os.getenv('BROKER_USERNAME')
     BROKER_PASSWORD = os.getenv('BROKER_PASSWORD')
     BROKER_URL = os.getenv('BROKER_URL')
+    LOGGING_FILE = os.getenv('LOGGING_FILE')

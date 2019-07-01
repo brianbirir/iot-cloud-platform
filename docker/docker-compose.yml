@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  iot_controller:
+    container_name: iot_controller
+    image: iot_controller:v1
+    tty: true
+  influxdb:
+    container_name: influxdb
+    image: influxdb
+  eqmx:
+    container_name: mqtt_broker
+    image: emqx
