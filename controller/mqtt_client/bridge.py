@@ -1,12 +1,12 @@
 """MQTT client that subscribes to topic"""
 import paho.mqtt.client as mqtt
-from ..config import Config
+from config import Config
 from .subscriber import (on_connect,
                          on_message,
                          on_disconnect,
                          on_subscribe,
                          on_log)
-import cloud_gateway.helpers.logger as app_logger
+import helpers.logger as app_logger
 
 
 # load MQTT broker configurations

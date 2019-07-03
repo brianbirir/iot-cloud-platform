@@ -5,9 +5,44 @@ services:
     container_name: iot_controller
     image: iot_controller:v1
     tty: true
+    build: 
+      context: ../controller
+      dockerfile: ../docker/controller/Dockerfile
+    env_file:
+      - ../.env
+    depends_on:
+      - influxdb
+      - eqmx
+    networks:
+      - iot_cloud
   influxdb:
     container_name: influxdb
-    image: influxdb
+    image: influxdb:latest
+    restart: always
+    env_file:
+      - ../.env
+    networks:
+      - iot_cloud
+    expose:
+      - 8086
+      - 8083
+    volumes:
+      - influxdb:/var/lib/influxdb
+      - ../configs/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
   eqmx:
     container_name: mqtt_broker
-    image: emqx
+    image: emqx/emqx:latest
+    ports:
+      - "18083:18083"
+      - "3881:1883"
+    expose:
+      - 1883
+    networks:
+      - iot_cloud
+    restart: always
+
+networks:
+  iot_cloud:
+
+volumes:
+  influxdb:

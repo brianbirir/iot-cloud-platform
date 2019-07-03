@@ -1,8 +1,7 @@
-import re
 import json
-from ..helpers import logger as app_logger
+from helpers import logger as app_logger
 from influxdb import InfluxDBClient, exceptions
-from ..config import Config
+from config import Config
 
 
 class Database:

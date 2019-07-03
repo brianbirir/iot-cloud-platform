@@ -1,7 +1,7 @@
 """This helper module logs messages of different severity levels
 """
 import logging
-from ..config import Config
+from config import Config
 
 cnf = Config()
 

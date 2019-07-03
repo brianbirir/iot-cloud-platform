@@ -1,6 +1,6 @@
-import cloud_gateway.helpers.logger as app_logger
-from ..config import Config
-from ..db import Database
+import helpers.logger as app_logger
+from config import Config
+from db import Database
 
 # load MQTT broker configurations
 topic = Config.BROKER_TOPIC
