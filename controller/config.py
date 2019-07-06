@@ -1,12 +1,12 @@
 import os
-# from pathlib import Path
-# from dotenv import load_dotenv
+from pathlib import Path
+from dotenv import load_dotenv
 
 
 class Config:
     """Loading of configurations from dot env file"""
-    # env_path = Path('.') / '.env'
-    # load_dotenv(dotenv_path=env_path)
+    env_path = Path('.') / '.env'
+    load_dotenv(dotenv_path=env_path)
 
     INFLUX_DB = os.getenv('INFLUX_DB')
     INFLUX_USER = os.getenv('INFLUX_USER')
