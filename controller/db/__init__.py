@@ -1,5 +1,7 @@
 import json
+import uuid
 from helpers import logger as app_logger
+from helpers import parser
 from influxdb import InfluxDBClient, exceptions
 from config import Config
 
@@ -41,7 +43,7 @@ class Database:
             except exceptions.InfluxDBServerError as e1:
                 app_logger.error(str(e1))
 
-    def parse_sensor_data(self):
+    def parse_json_sensor_data(self):
         """Parse JSON data from sensors gateway"""
         try:
             json_sensor_data = json.loads(self._sensor_data)
@@ -63,10 +65,29 @@ class Database:
         except Exception as e:
             app_logger.error(str(e))
 
+    def compile_sensor_data(self):
+        try:
+            sensor_type = parser.get_sensor_type(self._sensor_topic)
+            db_data = [
+                {
+                    "measurement": sensor_type,
+                    "tags": {
+                        "id": uuid.uuid4()
+                    },
+                    "fields": {
+                        "value": parser.convert_sensor_data(self._sensor_data)
+                    }
+                }
+            ]
+            app_logger.info("Sensor data compiled successfully.")
+            return db_data
+        except Exception as e:
+            app_logger.error(str(e))
+
     def save(self):
         self.check_db()
         try:
-            self.db_client.write_points(self.parse_sensor_data(), time_precision='s')
+            self.db_client.write_points(self.compile_sensor_data(), time_precision='s')
             app_logger.info("Save to database")
         except exceptions.InfluxDBClientError as e:
             app_logger.error(str(e))
