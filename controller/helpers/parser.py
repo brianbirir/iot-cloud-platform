@@ -14,7 +14,7 @@ def get_sensor_type(s_topic):
     return sensor_type[1]
 
 
-def convert_sensor_data(sensor_data, data_type="int"):
+def convert_sensor_data(sensor_data, data_type="str"):
     """Converts sensor data to a specific data type
 
     Args:
