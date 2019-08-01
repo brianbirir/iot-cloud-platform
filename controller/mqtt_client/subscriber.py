@@ -1,6 +1,7 @@
 import helpers.logger as app_logger
 from config import Config
 from db import Database
+from helpers.parser import convert_from_byte_literal
 
 # load MQTT broker configurations
 topic = Config.BROKER_TOPIC
@@ -33,7 +34,7 @@ def on_message(mqtt_client, userdata, msg):
     app_logger.info("MQTT Topic: " + str(msg.topic))
     app_logger.info("Data: " + str(msg.payload))
     database_instance = Database(sensor_topic=msg.topic,
-                                 sensor_data=msg.payload)
+                                 sensor_data=convert_from_byte_literal(msg.payload))
     database_instance.save()
     app_logger.info("Data saved to Influx database!")
 

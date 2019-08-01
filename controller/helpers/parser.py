@@ -1,4 +1,5 @@
 """Parse data received from sensors and return in acceptable format"""
+import ast
 
 
 def get_sensor_type(s_topic):
@@ -14,7 +15,7 @@ def get_sensor_type(s_topic):
     return sensor_type[1]
 
 
-def convert_sensor_data(sensor_data, data_type="str"):
+def convert_single_sensor_data(sensor_data, data_type="str"):
     """Converts sensor data to a specific data type
 
     Args:
@@ -30,5 +31,24 @@ def convert_sensor_data(sensor_data, data_type="str"):
         return float(sensor_data)
     elif data_type == "int":
         return int(float(sensor_data))
+    else:
+        return sensor_data
+
+
+def parse_multiple_sensor_data_to_dict(sensor_data):
+    """Converts sensor data into valid dict
+    
+    Args:
+        sensor_data (str): sensor data from mqtt client publisher
+
+    Returns:
+        parsed_sensor_data (dict): sensor data as valid dictionary
+    """
+    return ast.literal_eval(sensor_data)
+
+
+def convert_from_byte_literal(sensor_data):
+    if isinstance(sensor_data, bytes):
+        return str(sensor_data, encoding='utf-8')
     else:
         return sensor_data

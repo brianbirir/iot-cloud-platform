@@ -35,12 +35,12 @@ def connect_to_broker():
         mqtt_c.username_pw_set(username, password)
         app_logger.info("Username and password have been set.")
     except Exception as e:
-        app_logger.error(str(e))
+        app_logger.error("There's a problem with the username or passwor: " + str(e))
     try:
         mqtt_c.connect(broker_url, int(port), int(keep_alive))
         app_logger.info("Initiation of connection to broker.")
     except Exception as e:
-        app_logger.error(str(e))
+        app_logger.error("A problem was exprienced while connecting to the broker: " + str(e))
 
     # loop forever
     mqtt_c.loop_forever()

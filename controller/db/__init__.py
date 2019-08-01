@@ -66,6 +66,11 @@ class Database:
             app_logger.error(str(e))
 
     def compile_sensor_data(self):
+        """Compiles sensor related data into a single object
+
+        Return:
+             db_data (list): compiled sensor data object
+        """
         try:
             sensor_type = parser.get_sensor_type(self._sensor_topic)
             db_data = [
@@ -74,9 +79,7 @@ class Database:
                     "tags": {
                         "id": uuid.uuid4()
                     },
-                    "fields": {
-                        "value": parser.convert_sensor_data(self._sensor_data)
-                    }
+                    "fields": parser.parse_multiple_sensor_data_to_dict(self._sensor_data)
                 }
             ]
             app_logger.info("Sensor data compiled successfully.")
