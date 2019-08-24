@@ -5,6 +5,7 @@ from config import Config
 
 
 class ConfigTest(unittest.TestCase):
+    """Testing of application configurations"""
 
     c = Config()
 
