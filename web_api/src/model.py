@@ -51,7 +51,7 @@ class ProjectModel(BaseModel):
     """ Generates projects table"""
     __tablename__ = 'Project'
     name = db.Column(db.String(128), nullable=False)
-    device_uuid = db.Column(db.String(128), nullable=False)
+    description = db.Column(db.Text, nullable=True)
     devices = db.relationship('DeviceModel', backref='project', lazy=True)
 
     def __repr__(self):
