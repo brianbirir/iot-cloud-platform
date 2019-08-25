@@ -8,6 +8,7 @@ from src.user import User
 from src.test import TestApi
 from src.auth import Login, Logout
 from src.device import Device
+from src.project import Project
 
 
 def create_app(config_object='config.DevelopmentConfig'):
@@ -15,11 +16,9 @@ def create_app(config_object='config.DevelopmentConfig'):
     :param config_object:
     :return: src
 
-    This factory returns the initialized Flask src
+    This factory returns the initialized Flask app
 
     """
-
-    # initialize Flask src
     app = Flask(__name__)
     app.config.from_object(config_object)  # load configurations object
 
@@ -32,10 +31,11 @@ def create_app(config_object='config.DevelopmentConfig'):
 
     # resource routing
     api = Api(app)
-    api.add_resource(User, '/api/user', '/api/user/<int:user_id>')  # user resource
-    api.add_resource(Login, '/api/login')  # login resource
-    api.add_resource(Logout, '/api/logout')  # logout resource
-    api.add_resource(TestApi, '/api/test')  # test resource
-    api.add_resource(Device, '/api/device')  # test resource
+    api.add_resource(User, '/api/user', '/api/user/<int:user_id>')
+    api.add_resource(Login, '/api/login')
+    api.add_resource(Logout, '/api/logout')
+    api.add_resource(TestApi, '/api/test')
+    api.add_resource(Device, '/api/device')
+    api.add_resource(Project, '/api/project')
 
     return app
