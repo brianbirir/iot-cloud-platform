@@ -1,4 +1,5 @@
 from datetime import datetime
+import requests
 from flask_restful import Resource, reqparse
 
 from src.model import DeviceModel
@@ -15,7 +16,10 @@ class Device(Resource):
 
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('device_id', type=int, help='The ID for the device is missing or wrongly formatted', required=True)
+        parser.add_argument('device_id', type=int,
+                            help='The ID for the device is missing or wrongly formatted',
+                            required=True,
+                            location='args')
         return parser.parse_args()
 
     @staticmethod
@@ -27,10 +31,24 @@ class Device(Resource):
 
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('device_name', type=str, help='The name of the device', required=True)
-        parser.add_argument('device_uuid', type=str, help='The unique id of the device', required=True)
-        parser.add_argument('project_id', type=int, help='The id of the associated project', required=True)
+        parser.add_argument('device_name',
+                            type=str,
+                            help='The name of the device is missing or wrongly formatted',
+                            required=True)
+        parser.add_argument('device_uuid',
+                            type=str,
+                            help='The uuid of the device is missing or wrongly formatted',
+                            required=True)
+        parser.add_argument('project_id',
+                            type=int,
+                            help='The id of the associated project is missing or wrongly formatted',
+                            required=True)
         return parser.parse_args()
+
+    @staticmethod
+    def check_existing_device(device_name):
+        """Returns query object of an existing project or null"""
+        return DeviceModel.query.filter_by(name=device_name).first()
 
     def get(self):
         """Returns a device's details as HTTP response based on HTTP request
@@ -76,8 +94,7 @@ class Device(Resource):
         device_details = self.get_device_parsed_args()
 
         try:
-            # check if device exists by using uuid
-            if not self.check_existing_user(device_details['device_uuid']):
+            if not self.check_existing_device(device_details['device_name']):
                 user = DeviceModel(
                     name=device_details['device_name'],
                     device_uuid=device_details['device_uuid'],
@@ -100,7 +117,7 @@ class Device(Resource):
 
         Raises:
             Exception: General exceptions aligned to SQLAlchemy in the form of a 500 HTTP status and
-                JSON content-type response
+            JSON content-type response
 
         """
         device_id = self.get_device_id_parsed_args()
