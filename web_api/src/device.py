@@ -54,9 +54,9 @@ class Device(Resource):
         """Returns a device's details as HTTP response based on HTTP request
 
         Returns:
-            JSON object: A 200 HTTP status response with details of a user
+            JSON object: A 200 HTTP status response with details of a device
 
-            JSON object: A 404 HTTP status response for a non-existing user
+            JSON object: A 404 HTTP status response for a non-existing device
 
         Raises:
             Exception: General exceptions aligned to SQLAlchemy in the form of a 500 HTTP status
