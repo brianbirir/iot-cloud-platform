@@ -9,6 +9,7 @@ from src.test import TestApi
 from src.auth import Login, Logout
 from src.device import Device
 from src.project import Project
+from src.sensor_data import SensorData
 
 
 def create_app(config_object='config.DevelopmentConfig'):
@@ -37,5 +38,6 @@ def create_app(config_object='config.DevelopmentConfig'):
     api.add_resource(TestApi, '/api/test')
     api.add_resource(Device, '/api/device')
     api.add_resource(Project, '/api/project')
+    api.add_resource(SensorData, '/api/device/data')
 
     return app

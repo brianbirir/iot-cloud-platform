@@ -13,6 +13,13 @@ class Config:
     SECRET_KEY = str(os.getenv('SECRET_KEY'))
     SQLALCHEMY_DATABASE_URI = str(os.getenv('DATABASE_URI'))
     SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
+    INFLUX_DB = os.getenv('INFLUX_DB')
+    INFLUX_USER = os.getenv('INFLUX_USER')
+    INFLUX_PASSWORD = os.getenv('INFLUX_PASSWORD')
+    INFLUX_PORT = os.getenv('INFLUX_PORT')
+    INFLUX_HOST = os.getenv('INFLUX_HOST')
+    INFLUX_DB_MEASUREMENT = os.getenv('INFLUX_DB_MEASUREMENT')
+    LOGGING_FILE = os.getenv('LOGGING_FILE')
 
 
 class ProductionConfig(Config):
