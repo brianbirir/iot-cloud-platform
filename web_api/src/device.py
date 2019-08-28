@@ -1,5 +1,4 @@
 from datetime import datetime
-import requests
 from flask_restful import Resource, reqparse
 
 from src.model import DeviceModel
