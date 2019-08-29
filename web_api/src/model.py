@@ -15,8 +15,10 @@ class BaseModel(db.Model):
     __abstract__ = True
 
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    created_at = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow())
 
     def save_to_db(self):
         """Writes data to the database"""
@@ -63,7 +65,8 @@ class DeviceModel(BaseModel):
     __tablename__ = 'Devices'
     name = db.Column(db.String(128), nullable=False)
     device_uuid = db.Column(db.String(128), nullable=False)
-    project_id = db.Column(db.Integer, db.ForeignKey('Project.id'), nullable=False)
+    project_id = db.Column(
+        db.Integer, db.ForeignKey('Project.id'), nullable=False)
 
     def __repr__(self):
         return '<name: {} >'.format(self.name)
@@ -79,7 +82,8 @@ class BlacklistedTokens(BaseModel):
 
     @staticmethod
     def check_blacklisted_token(auth_token):
-        check = BlacklistedTokens.query.filter_by(token=str(auth_token)).first()
+        check = BlacklistedTokens.query.filter_by(
+            token=str(auth_token)).first()
 
         if check:
             return True

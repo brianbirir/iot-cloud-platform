@@ -9,7 +9,6 @@ algo = 'HS256'
 
 
 class JwtTest:
-
     @staticmethod
     def test_jwt_encode():
         auth_token = encode_jwt(alg=algo, subject_id=subject_id)

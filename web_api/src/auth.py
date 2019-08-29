@@ -6,7 +6,6 @@ from src.utils.security.helper import get_auth_token, get_secret_key
 
 
 class Login(Resource):
-
     @staticmethod
     def get_login_details():
         """Parses login data from the POST requests
@@ -16,10 +15,18 @@ class Login(Resource):
 
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('email', type=str, help='The email of the user is required', required=True)
-        parser.add_argument('password', type=str, help='The password of the user', required=True)
+        parser.add_argument(
+            'email',
+            type=str,
+            help='The email of the user is required',
+            required=True)
+        parser.add_argument(
+            'password',
+            type=str,
+            help='The password of the user',
+            required=True)
         return parser.parse_args()
-    
+
     def post(self):
         """Receives data from HTTP POST request
 
@@ -43,14 +50,16 @@ class Login(Resource):
                 return {"message": "This user does not exist"}, 404
             else:
                 # get authentication token
-                auth_token = encode_jwt(subject_id=user.id, secret=get_secret_key())
+                auth_token = encode_jwt(
+                    subject_id=user.id, secret=get_secret_key())
 
                 # verify password and return 403 response if it's wrong
                 if UserModel.verify_hash(data['password'], user.password):
                     response = {
                         "user_id": user.id,
                         "message": "Logged in as {}".format(user.name),
-                        "auth_token": auth_token.decode()  # decode from bytes to string
+                        "auth_token":
+                        auth_token.decode()  # decode from bytes to string
                     }
                     return response, 200
                 else:
@@ -60,7 +69,6 @@ class Login(Resource):
 
 
 class Logout(Resource):
-
     def post(self):
         data_token = get_auth_token()
 
@@ -70,10 +78,14 @@ class Logout(Resource):
 
             if isinstance(decoded_token_response, int):
                 # check if token is in the blacklist
-                token_check = BlacklistedTokens.check_blacklisted_token(data_token)
+                token_check = BlacklistedTokens.check_blacklisted_token(
+                    data_token)
 
                 if token_check:  # if true mention given token has been blacklisted
-                    return {"message": "The token has been revoked. Please log in again"}, 401
+                    return {
+                        "message":
+                        "The token has been revoked. Please log in again"
+                    }, 401
                 else:  # when false save token to table for black listed tokens
                     blacklisted_token = BlacklistedTokens(token=data_token)
                     blacklisted_token.save_to_db()

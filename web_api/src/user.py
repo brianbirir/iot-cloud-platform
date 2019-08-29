@@ -6,7 +6,6 @@ from src.utils.security.jwt_security import decode_jwt
 
 
 class User(Resource):
-
     @staticmethod
     def get_secret_key():
         """Provides secret key config via application context
@@ -26,10 +25,13 @@ class User(Resource):
 
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('email', type=str,
-                            help='Email address used to login. This should be a string',
-                            required=True)
-        parser.add_argument('name', type=str, help='The name of the user', required=True)
+        parser.add_argument(
+            'email',
+            type=str,
+            help='Email address used to login. This should be a string',
+            required=True)
+        parser.add_argument(
+            'name', type=str, help='The name of the user', required=True)
         return parser.parse_args()
 
     @staticmethod
@@ -41,11 +43,12 @@ class User(Resource):
         
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('Authorization',
-                            location='headers',
-                            help='The authentication token in the Authorization header \
+        parser.add_argument(
+            'Authorization',
+            location='headers',
+            help='The authentication token in the Authorization header \
                              is required to access this resource',
-                            required=True)
+            required=True)
 
         auth_token = parser.parse_args()
         return auth_token['Authorization'].split()[1]
@@ -59,7 +62,8 @@ class User(Resource):
         
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('user_id', type=int, help='The ID for the user', required=True)
+        parser.add_argument(
+            'user_id', type=int, help='The ID for the user', required=True)
         return parser.parse_args()
 
     @staticmethod
@@ -71,7 +75,11 @@ class User(Resource):
 
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('password', type=str, help='The password for the user', required=True)
+        parser.add_argument(
+            'password',
+            type=str,
+            help='The password for the user',
+            required=True)
         return parser.parse_args()
 
     @staticmethod
@@ -93,13 +101,15 @@ class User(Resource):
 
         """
         data_token = self.get_auth_token()
-        
+
         try:
             # check token validity
-            decoded_token_response = decode_jwt(data_token, self.get_secret_key())
+            decoded_token_response = decode_jwt(data_token,
+                                                self.get_secret_key())
 
             if isinstance(decoded_token_response, int):
-                user = UserModel.query.filter_by(id=decoded_token_response).first()
+                user = UserModel.query.filter_by(
+                    id=decoded_token_response).first()
 
                 if user:
                     response = {
@@ -137,10 +147,13 @@ class User(Resource):
                 user = UserModel(
                     email=data_user_details['email'],
                     name=data_user_details['name'],
-                    password=UserModel.generate_hash(data_password['password'])
-                )
+                    password=UserModel.generate_hash(
+                        data_password['password']))
                 user.save_to_db()
-                return {"message": "User {} was created".format(data_user_details['name'])}, 200
+                return {
+                    "message":
+                    "User {} was created".format(data_user_details['name'])
+                }, 200
             else:
                 return {"message": "That email address already exists"}, 400
         except Exception as e:
@@ -164,15 +177,20 @@ class User(Resource):
         data_password = self.get_user_password_parsed_args()
 
         try:
-            user = UserModel.query.filter_by(id=data_user_id['user_id']).first()
+            user = UserModel.query.filter_by(
+                id=data_user_id['user_id']).first()
 
             if user:
                 user.email = data_user_details['email']
                 user.name = data_user_details['name']
-                user.password = UserModel.generate_hash(data_password['password'])
+                user.password = UserModel.generate_hash(
+                    data_password['password'])
                 user.updated_at = datetime.utcnow()
                 user.save_to_db()
-                return {"message": "User {} was updated".format(data_user_details['name'])}, 200
+                return {
+                    "message":
+                    "User {} was updated".format(data_user_details['name'])
+                }, 200
             else:
                 return {"message": "This user does not exist"}, 404
         except Exception as e:
@@ -194,11 +212,14 @@ class User(Resource):
         data_user_id = self.get_user_id_parsed_args()
 
         try:
-            user = UserModel.query.filter_by(id=data_user_id['user_id']).first()
+            user = UserModel.query.filter_by(
+                id=data_user_id['user_id']).first()
 
             if user:
                 user.delete_from_db()
-                return {"message": "This user has been deleted successfully"}, 200
+                return {
+                    "message": "This user has been deleted successfully"
+                }, 200
             else:
                 return {"message": "This user does not exist"}, 404
         except Exception as e:

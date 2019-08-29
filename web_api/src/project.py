@@ -5,7 +5,6 @@ from src.model import ProjectModel
 
 
 class Project(Resource):
-
     @staticmethod
     def get_project_id_parsed_args():
         """Parses project id arg received from the HTTP request.
@@ -15,8 +14,12 @@ class Project(Resource):
 
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('project_id', type=int, help='The ID for the project is missing or wrongly formatted',
-                            required=True, location='args')
+        parser.add_argument(
+            'project_id',
+            type=int,
+            help='The ID for the project is missing or wrongly formatted',
+            required=True,
+            location='args')
         return parser.parse_args()
 
     @staticmethod
@@ -28,14 +31,17 @@ class Project(Resource):
 
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('project_name',
-                            type=str,
-                            help='The name of the project is missing or wrongly formatted',
-                            required=True)
-        parser.add_argument('project_description',
-                            type=str,
-                            help='The description of the project is missing or wrongly formatted',
-                            required=True)
+        parser.add_argument(
+            'project_name',
+            type=str,
+            help='The name of the project is missing or wrongly formatted',
+            required=True)
+        parser.add_argument(
+            'project_description',
+            type=str,
+            help=
+            'The description of the project is missing or wrongly formatted',
+            required=True)
         return parser.parse_args()
 
     @staticmethod
@@ -59,7 +65,8 @@ class Project(Resource):
         project_id = self.get_project_id_parsed_args()
 
         try:
-            project = ProjectModel.query.filter_by(id=project_id['project_id']).first()
+            project = ProjectModel.query.filter_by(
+                id=project_id['project_id']).first()
             if project:
                 response = {
                     "project_id": project.id,
@@ -87,13 +94,17 @@ class Project(Resource):
         project_details = self.get_project_parsed_args()
 
         try:
-            if not self.check_existing_project(project_details['project_name']):
+            if not self.check_existing_project(
+                    project_details['project_name']):
                 user = ProjectModel(
                     name=project_details['project_name'],
-                    description=project_details['project_description']
-                )
+                    description=project_details['project_description'])
                 user.save_to_db()
-                return {"message": "Project {} was created".format(project_details['project_name'])}, 200
+                return {
+                    "message":
+                    "Project {} was created".format(
+                        project_details['project_name'])
+                }, 200
             else:
                 return {"message": "The project already exists"}, 400
         except Exception as e:
@@ -116,14 +127,18 @@ class Project(Resource):
         project_details = self.get_project_parsed_args()
 
         try:
-            project = ProjectModel.query.filter_by(id=project_id['project_id']).first()
+            project = ProjectModel.query.filter_by(
+                id=project_id['project_id']).first()
 
             if project:
                 project.name = project_details['name']
                 project.description = project_details['project_uuid']
                 project.updated_at = datetime.utcnow()
                 project.save_to_db()
-                return {"message": "Project {} was updated".format(project_details['name'])}, 200
+                return {
+                    "message":
+                    "Project {} was updated".format(project_details['name'])
+                }, 200
             else:
                 return {"message": "The project does not exist"}, 404
         except Exception as e:
@@ -145,11 +160,14 @@ class Project(Resource):
         project_id = self.get_project_id_parsed_args()
 
         try:
-            project = ProjectModel.query.filter_by(id=project_id['project_id']).first()
+            project = ProjectModel.query.filter_by(
+                id=project_id['project_id']).first()
 
             if project:
                 project.delete_from_db()
-                return {"message": "The project has been deleted successfully"}, 200
+                return {
+                    "message": "The project has been deleted successfully"
+                }, 200
             else:
                 return {"message": "The project does not exist"}, 404
         except Exception as e:
