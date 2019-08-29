@@ -1,0 +1,7 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: IoT Cloud Platform
+  description: An API to access the web services for the IoT Cloud platform
+  license:
+    name: MIT
