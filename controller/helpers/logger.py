@@ -4,8 +4,6 @@ import logging
 from config import Config
 
 cnf = Config()
-
-
 logger = logging.getLogger('ruleblox_broker')
 app_log_handler = logging.FileHandler(cnf.LOGGING_FILE)
 app_log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')

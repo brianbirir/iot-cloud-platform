@@ -1,0 +1,380 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: IoT Cloud Platform
+  description: An API to access the web services for the IoT Cloud platform
+  license:
+    name: MIT
+    url: https://spdx.org/licenses/MIT.html
+paths:
+  /user:
+    post:
+      summary: Register a user
+      operationId: registerUser
+      tags:
+        - user
+      requestBody:
+        $ref: "#/components/requestBodies/UserBody"
+  /user/{id}:
+    get:
+      summary: Returns a user by ID
+      operationId: getUserById
+      tags:
+        - user
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      responses:
+        "200":
+          description: Successful retrieval of user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    put:
+      summary: Updates an existing user
+      operationId: updateUserById
+      tags:
+        - user
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      requestBody:
+        $ref: "#/components/requestBodies/UserBody"
+      responses:
+        "200":
+          description: Successful update of a user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    delete:
+      summary: Deletes an existing user
+      operationId: deleteUserById
+      tags:
+        - user
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      responses:
+        "200":
+          description: Successful deletion of user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+  /device:
+    post:
+      summary: Register a device
+      operationId: registerDevice
+      tags:
+        - device
+      requestBody:
+        $ref: "#/components/requestBodies/DeviceBody"
+  /device/{id}:
+    get:
+      summary: Returns a device by ID
+      operationId: getDeviceById
+      tags:
+        - device
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      responses:
+        "200":
+          description: Successful retrieval of a device
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    put:
+      summary: Updates an existing device
+      operationId: updateUserById
+      tags:
+        - device
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      requestBody:
+        $ref: "#/components/requestBodies/DeviceBody"
+      responses:
+        "200":
+          description: Successful update of a device
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    delete:
+      summary: Deletes an existing device
+      tags:
+        - device
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      operationId: deleteDeviceById
+      responses:
+        "200":
+          description: Successful deletion of device
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+  /device/data:
+    get:
+      summary: Returns sensor data for a device
+      operationId: getDeviceData
+      tags:
+        - device
+      parameters:
+        - $ref: "#/components/parameters/dataPointsLimit"
+      responses:
+        "200":
+          description: Successful retrieval of a device's data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data_points:
+                    type: object
+
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+  /project:
+    post:
+      summary: Register a project
+      operationId: registerProject
+      tags:
+        - project
+      requestBody:
+        $ref: "#/components/requestBodies/ProjectBody"
+  /project/{id}:
+    get:
+      summary: Returns a project by ID
+      operationId: getProjectById
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      responses:
+        "200":
+          description: Successful retrieval of a project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    put:
+      summary: Updates an existing project
+      operationId: updateProjectById
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      requestBody:
+        $ref: "#/components/requestBodies/ProjectBody"
+      responses:
+        "200":
+          description: Successful update of a project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    delete:
+      summary: Deletes an existing project
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      operationId: deleteProjectById
+      responses:
+        "200":
+          description: Successful deletion of a project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+      required:
+        - id
+    Device:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        device_uuid:
+          type: string
+        project_id:
+          type: integer
+      required:
+        - id
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+      required:
+        - id
+
+  responses:
+    403Forbidden:
+      description: Access to the specified resource is forbidden.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    404NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    500ServerError:
+      description: There is a problem with the server
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
+  parameters:
+    resourceId:
+      name: id
+      in: path
+      description: Resource ID
+      required: true
+      schema:
+        type: integer
+    deviceName:
+      name: name
+      in: path
+      description: Device name
+      required: true
+      schema:
+        type: string
+    dataPointsLimit:
+      name: num_of_datapoints
+      in: query
+      description: The number of data points to return
+      required: false
+      schema:
+        type: integer
+
+  requestBodies:
+    UserBody:
+      description: Contains user information
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+    DeviceBody:
+      description: Contains device information
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              device_uuid:
+                type: string
+              project_id:
+                type: integer
+    ProjectBody:
+      description: Contains project information
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              project_description:
+                type: string
