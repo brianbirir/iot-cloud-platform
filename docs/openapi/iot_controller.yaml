@@ -5,3 +5,144 @@ info:
   description: An API to access the web services for the IoT Cloud platform
   license:
     name: MIT
+    url: https://spdx.org/licenses/MIT.html
+paths:
+  /user:
+    post:
+      summary: Register a user
+      operationId: registeruser
+      parameters:
+        - $ref: "#/components/parameters/userEmail"
+        - $ref: "#/components/parameters/userPassword"
+  /user/{id}:
+    get:
+      summary: Returns a user by ID
+      operationId: getUserById
+      parameters:
+        - $ref: "#/components/parameters/userId"
+      responses:
+        "200":
+          description: Successful retrieval of user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    put:
+      summary: Updates an existing new user
+      operationId: updateUserById
+      requestBody:
+        $ref: "#/components/requestBodies/UserBody"
+      responses:
+        "200":
+          description: User has been updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    delete:
+      summary: Deletes an existing new user
+      operationId: deleteUserById
+      responses:
+        "200":
+          description: Successful deletion of user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+      required:
+        - id
+
+  responses:
+    403Forbidden:
+      description: Access to the specified resource is forbidden.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    404NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          type: object
+          properties:
+            message:
+              type: string
+    500ServerError:
+      description: There is a problem with the server
+      content:
+        application/json:
+          type: object
+          properties:
+            message:
+              type: string
+
+  parameters:
+    userId:
+      name: id
+      in: path
+      description: User ID
+      required: true
+      schema:
+        type: integer
+    userEmail:
+      name: email
+      in: path
+      description: User email
+      required: true
+      schema:
+        type: string
+    userPassword:
+      name: password
+      in: path
+      description: User password
+      required: true
+      schema:
+        type: string
+
+  requestBodies:
+    UserBody:
+      description: Contains user information
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string
