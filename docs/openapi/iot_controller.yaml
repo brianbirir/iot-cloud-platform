@@ -10,16 +10,19 @@ paths:
   /user:
     post:
       summary: Register a user
-      operationId: registeruser
-      parameters:
-        - $ref: "#/components/parameters/userEmail"
-        - $ref: "#/components/parameters/userPassword"
+      operationId: registerUser
+      tags:
+        - user
+      requestBody:
+        $ref: "#/components/requestBodies/UserBody"
   /user/{id}:
     get:
       summary: Returns a user by ID
       operationId: getUserById
+      tags:
+        - user
       parameters:
-        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/resourceId"
       responses:
         "200":
           description: Successful retrieval of user
@@ -34,13 +37,17 @@ paths:
         "500":
           $ref: "#/components/responses/500ServerError"
     put:
-      summary: Updates an existing new user
+      summary: Updates an existing user
       operationId: updateUserById
+      tags:
+        - user
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
       requestBody:
         $ref: "#/components/requestBodies/UserBody"
       responses:
         "200":
-          description: User has been updated successfully
+          description: Successful update of a user
           content:
             application/json:
               schema:
@@ -52,8 +59,12 @@ paths:
         "500":
           $ref: "#/components/responses/500ServerError"
     delete:
-      summary: Deletes an existing new user
+      summary: Deletes an existing user
       operationId: deleteUserById
+      tags:
+        - user
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
       responses:
         "200":
           description: Successful deletion of user
@@ -61,6 +72,148 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+  /device:
+    post:
+      summary: Register a device
+      operationId: registerDevice
+      tags:
+        - device
+      requestBody:
+        $ref: "#/components/requestBodies/DeviceBody"
+  /device/{id}:
+    get:
+      summary: Returns a device by ID
+      operationId: getDeviceById
+      tags:
+        - device
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      responses:
+        "200":
+          description: Successful retrieval of a device
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    put:
+      summary: Updates an existing device
+      operationId: updateUserById
+      tags:
+        - device
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      requestBody:
+        $ref: "#/components/requestBodies/DeviceBody"
+      responses:
+        "200":
+          description: Successful update of a device
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    delete:
+      summary: Deletes an existing device
+      tags:
+        - device
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      operationId: deleteDeviceById
+      responses:
+        "200":
+          description: Successful deletion of device
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+  /project:
+    post:
+      summary: Register a project
+      operationId: registerProject
+      tags:
+        - project
+      requestBody:
+        $ref: "#/components/requestBodies/ProjectBody"
+  /project/{id}:
+    get:
+      summary: Returns a project by ID
+      operationId: getProjectById
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      responses:
+        "200":
+          description: Successful retrieval of a project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    put:
+      summary: Updates an existing project
+      operationId: updateProjectById
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      requestBody:
+        $ref: "#/components/requestBodies/ProjectBody"
+      responses:
+        "200":
+          description: Successful update of a project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "500":
+          $ref: "#/components/responses/500ServerError"
+    delete:
+      summary: Deletes an existing project
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/resourceId"
+      operationId: deleteProjectById
+      responses:
+        "200":
+          description: Successful deletion of a project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
         "403":
           $ref: "#/components/responses/403Forbidden"
         "404":
@@ -82,6 +235,32 @@ components:
           type: string
       required:
         - id
+    Device:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        device_uuid:
+          type: string
+        project_id:
+          type: integer
+      required:
+        - id
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+      required:
+        - id
 
   responses:
     403Forbidden:
@@ -97,36 +276,31 @@ components:
       description: Resource not found
       content:
         application/json:
-          type: object
-          properties:
-            message:
-              type: string
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
     500ServerError:
       description: There is a problem with the server
       content:
         application/json:
-          type: object
-          properties:
-            message:
-              type: string
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
 
   parameters:
-    userId:
+    resourceId:
       name: id
       in: path
-      description: User ID
+      description: Resource ID
       required: true
       schema:
         type: integer
-    userEmail:
-      name: email
-      in: path
-      description: User email
-      required: true
-      schema:
-        type: string
-    userPassword:
-      name: password
+    deviceName:
+      name: name
       in: path
       description: User password
       required: true
@@ -145,4 +319,30 @@ components:
               name:
                 type: string
               email:
+                type: string
+    DeviceBody:
+      description: Contains device information
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              device_uuid:
+                type: string
+              project_id:
+                type: integer
+    ProjectBody:
+      description: Contains project information
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              project_description:
                 type: string
