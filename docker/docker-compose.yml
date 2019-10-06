@@ -42,6 +42,8 @@ services:
       - 1883
     networks:
       - iot_cloud
+    volumes:
+      - ../configs/emqx/emqx.conf:/etc/emqx.conf
     restart: always
   iot_postgres_db:
     container_name: iot_postgres_db
