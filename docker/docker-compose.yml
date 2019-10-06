@@ -5,18 +5,18 @@ services:
     container_name: iot_controller
     image: iot_controller:v1
     tty: true
-    build: 
+    build:
       context: ../controller
       dockerfile: ../docker/controller/Dockerfile
     env_file:
       - ../.env
     depends_on:
-      - influxdb
-      - eqmx
+      - iot_influxdb
+      - iot_mqtt_broker
     networks:
       - iot_cloud
-  influxdb:
-    container_name: influxdb
+  iot_influxdb:
+    container_name: iot_influxdb
     image: influxdb:latest
     restart: always
     env_file:
@@ -26,11 +26,14 @@ services:
     expose:
       - 8086
       - 8083
+    ports:
+      - "8086:8086"
+      - "8083:8083"
     volumes:
-      - influxdb:/var/lib/influxdb
+      - iot_influxdb_volume:/var/lib/influxdb
       - ../configs/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
-  eqmx:
-    container_name: mqtt_broker
+  iot_mqtt_broker:
+    container_name: iot_mqtt_broker
     image: emqx/emqx:latest
     ports:
       - "18083:18083"
@@ -40,9 +43,21 @@ services:
     networks:
       - iot_cloud
     restart: always
+  iot_postgres_db:
+    container_name: iot_postgres_db
+    image: postgres:11
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - ../env/postgres.env
+    volumes:
+      - iot_postgres_volume:/var/lib/postgresql/data
+      
 
 networks:
   iot_cloud:
 
 volumes:
-  influxdb:
+  iot_influxdb_volume:
+  iot_postgres_volume:
