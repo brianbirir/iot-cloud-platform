@@ -50,7 +50,7 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - ../env/postgres.env
+      - ../platform_env/postgres.env
     volumes:
       - iot_postgres_volume:/var/lib/postgresql/data
       
