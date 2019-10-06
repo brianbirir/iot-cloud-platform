@@ -20,7 +20,7 @@ services:
     image: influxdb:latest
     restart: always
     env_file:
-      - ../.env
+      - ../platform_env/influxdb.env
     networks:
       - iot_cloud
     expose:
@@ -54,7 +54,6 @@ services:
     volumes:
       - iot_postgres_volume:/var/lib/postgresql/data
       
-
 networks:
   iot_cloud:
 
