@@ -55,6 +55,19 @@ services:
       - ../platform_env/postgres.env
     volumes:
       - iot_postgres_volume:/var/lib/postgresql/data
+  iot_redis:
+    container_name: iot_redis
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - iot_cloud
+    volumes:
+      - iot_redis_volume:/data
+      - ../configs/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - 6379
       
 networks:
   iot_cloud:
@@ -62,3 +75,4 @@ networks:
 volumes:
   iot_influxdb_volume:
   iot_postgres_volume:
+  iot_redis_volume:
