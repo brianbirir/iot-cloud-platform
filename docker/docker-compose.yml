@@ -68,6 +68,19 @@ services:
       - ../configs/redis/redis.conf:/usr/local/etc/redis/redis.conf
     expose:
       - 6379
+  iot_nginx:
+    container_name: iot_nginx
+    image: nginx:latest
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - iot_cloud
+    # volumes:
+     #  - ../configs/etc/nginx/conf.d/web_api.conf:/etc/nginx/conf.d/web_api.conf
+    expose:
+      - 8080
+    command: [nginx-debug, '-g', 'daemon off;']
       
 networks:
   iot_cloud:
