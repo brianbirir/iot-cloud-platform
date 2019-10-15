@@ -48,6 +48,16 @@ def parse_multiple_sensor_data_to_dict(sensor_data):
 
 
 def convert_from_byte_literal(sensor_data):
+    """Converts from byte literal to string
+
+    Only if parameter value is a byte
+    
+    Args:
+        sensor_data (string or bytes): incoming sensor data
+    
+    Returns:
+        [string]: sensor data
+    """
     if isinstance(sensor_data, bytes):
         return str(sensor_data, encoding='utf-8')
     else:
