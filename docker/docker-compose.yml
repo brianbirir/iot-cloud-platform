@@ -9,7 +9,8 @@ services:
       context: ../controller
       dockerfile: ../docker/controller/Dockerfile
     env_file:
-      - ../.env
+      - ../platform_env/controller.env
+      - ../platform_env/influxdb.env
     depends_on:
       - iot_influxdb
       - iot_mqtt_broker
@@ -81,6 +82,22 @@ services:
     expose:
       - 8080
     command: [nginx-debug, '-g', 'daemon off;']
+  iot_web_api:
+    container_name: iot_web_api
+    image: iot_web_api:v1
+    tty: true
+    build:
+      context: ../web_api
+      dockerfile: ../docker/web_api/Dockerfile
+    env_file:
+      - ../.env
+    depends_on:
+      - iot_nginx
+      - iot_redis
+      - iot_postgres_db
+    networks:
+      - iot_cloud
+
       
 networks:
   iot_cloud:

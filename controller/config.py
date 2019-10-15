@@ -8,9 +8,9 @@ class Config:
     env_file = env_file_path + '/' + '.env'
     load_dotenv(dotenv_path=env_file)
 
-    INFLUX_DB = os.getenv('INFLUX_DB')
-    INFLUX_USER = os.getenv('INFLUX_USER')
-    INFLUX_PASSWORD = os.getenv('INFLUX_PASSWORD')
+    INFLUX_DB = os.getenv('INFLUXDB_DB')
+    INFLUX_USER = os.getenv('INFLUXDB_ADMIN_USER')
+    INFLUX_PASSWORD = os.getenv('INFLUXDB_ADMIN_PASSWORD')
     INFLUX_PORT = os.getenv('INFLUX_PORT')
     INFLUX_HOST = os.getenv('INFLUX_HOST')
     BROKER_PORT = os.getenv('BROKER_PORT')
@@ -20,4 +20,3 @@ class Config:
     BROKER_USERNAME = os.getenv('BROKER_USERNAME')
     BROKER_PASSWORD = os.getenv('BROKER_PASSWORD')
     BROKER_URL = os.getenv('BROKER_URL')
-    LOGGING_FILE = os.getenv('LOGGING_FILE')
