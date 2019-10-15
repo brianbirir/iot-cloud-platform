@@ -22,7 +22,8 @@ def on_connect(mqtt_client, userdata, flags, rc):
         app_logger.info("Broker connection was successful")
         mqtt_client.subscribe(topic, int(qos))
     else:
-        app_logger.error(return_code.get(rc, "Unable to identify return code error!"))
+        app_logger.error(
+            return_code.get(rc, "Unable to identify return code error!"))
 
 
 def on_disconnect(mqtt_client, userdata, rc):
@@ -34,7 +35,8 @@ def on_message(mqtt_client, userdata, msg):
     app_logger.info("MQTT Topic: " + str(msg.topic))
     app_logger.info("Data: " + str(msg.payload))
     database_instance = Database(sensor_topic=msg.topic,
-                                 sensor_data=convert_from_byte_literal(msg.payload))
+                                 sensor_data=convert_from_byte_literal(
+                                     msg.payload))
     database_instance.save()
     app_logger.info("Data saved to Influx database!")
 
