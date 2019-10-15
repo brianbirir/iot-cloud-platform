@@ -1,5 +1,4 @@
-"""This helper module logs messages of different severity levels
-"""
+"""This helper module logs messages of different severity levels"""
 import logging
 import sys
 
