@@ -16,6 +16,7 @@ services:
       - iot_mqtt_broker
     networks:
       - iot_cloud
+    restart: always
   iot_influxdb:
     container_name: iot_influxdb
     image: influxdb:latest
