@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  iot_controller:
+  iot_mqtt_client:
     container_name: iot_controller
     image: iot_controller:v1
     tty: true
@@ -17,6 +17,8 @@ services:
     networks:
       - iot_cloud
     restart: always
+    # ports:
+    #   - "3881:1883"
   iot_influxdb:
     container_name: iot_influxdb
     image: influxdb:latest
@@ -27,10 +29,8 @@ services:
       - iot_cloud
     expose:
       - 8086
-      - 8083
     ports:
       - "8086:8086"
-      - "8083:8083"
     volumes:
       - iot_influxdb_volume:/var/lib/influxdb
       - ../configs/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
