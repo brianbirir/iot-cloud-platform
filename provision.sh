@@ -1,28 +1,32 @@
 #!/bin/bash
 export DEBIAN_FRONTEND=noninteractive
-sudo apt update && sudo apt install -y \
+sudo apt update && sudo apt upgrade && sudo apt install -y \
     apt-transport-https \
     ca-certificates \
     curl \
     gnupg-agent \
     software-properties-common
 
-echo "Installing InfluxDB"
-wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
-source /etc/lsb-release
-echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
-sudo apt-get update && sudo apt-get install influxdb
-sudo systemctl unmask influxdb.service
-sudo systemctl start influxdb
+echo "Installing Docker’s official GPG key"
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
-echo "Installing EMQ X Broker"
-curl -fsSL https://repos.emqx.io/gpg.pub | sudo apt-key add -
-sudo apt-key fingerprint 3E640D53
-sudo add-apt-repository --yes \
-    "deb [arch=amd64] https://repos.emqx.io/emqx-ce/deb/ubuntu/ \
-    $(lsb_release -cs) \
-    stable"
-sudo apt update
-sudo apt install -y emqx
-echo "Starting EMQ X Broker"
-sudo systemctl start emqx
+echo "Setting up Docker stable repository"
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+echo "Installing Docker engine"
+sudo apt-get update
+sudo apt-get install -y docker-ce
+
+echo "Restarting Docker engine"
+systemctl restart docker
+
+echo "Confirming Docker is running"
+sudo docker run hello-world
+
+echo "Installing docker-compose"
+sudo curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
+echo "Run container IoT cloud services"
+docker-compose -f /var/www/cloud_gateway/docker/docker-compose.yml up -d

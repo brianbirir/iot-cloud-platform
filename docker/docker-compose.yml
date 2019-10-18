@@ -17,8 +17,6 @@ services:
     networks:
       - iot_cloud
     restart: always
-    # ports:
-    #   - "3881:1883"
   iot_influxdb:
     container_name: iot_influxdb
     image: influxdb:latest
