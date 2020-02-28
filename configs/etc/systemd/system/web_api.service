@@ -1,0 +1,14 @@
+[Unit]
+Description=Gunicorn instance to serve web api Flask application
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=vagrant
+Group=www-data
+WorkingDirectory=/var/www/cloud_gateway/web_api
+Environment="PATH=/home/vagrant/venv/bin"
+ExecStart=/home/vagrant/venv/bin/gunicorn --workers 3 --bind unix:/run/gunicorn.sock -m 007 "src:create_app('config.DevelopmentConfig')"
+
+[Install]
+WantedBy=multi-user.target

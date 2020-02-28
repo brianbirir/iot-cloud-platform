@@ -3,14 +3,16 @@ import psycopg2
 from config import DatabaseInitializationConfig
 
 
-db_config = DatabaseInitializationConfig()
-
-
 class TestDatabase(unittest.TestCase):
+    """Test database connection and configurations"""
+
+    db_config = DatabaseInitializationConfig()
+
     def test_connection(self):
-        conn = psycopg2.connect(dbname=db_config.POSTGRES_DATABASE_NAME,
-                                user=db_config.POSTGRES_DATABASE_USER,
-                                password=db_config.POSTGRES_DATABASE_PASSWORD,
-                                host=db_config.POSTGRES_DATABASE_HOST,
-                                port=db_config.POSTGRES_DATABASE_PORT)
+        """Tests connection to database"""
+        conn = psycopg2.connect(dbname=self.db_config.POSTGRES_DATABASE_NAME,
+                                user=self.db_config.POSTGRES_DATABASE_USER,
+                                password=self.db_config.POSTGRES_DATABASE_PASSWORD,
+                                host=self.db_config.POSTGRES_DATABASE_HOST,
+                                port=self.db_config.POSTGRES_DATABASE_PORT)
         self.assertIsInstance()
