@@ -7,6 +7,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Root from './Root';
 import * as serviceWorker from './serviceWorker';
+import LogRocket from 'logrocket';
+
+LogRocket.init('mfpmig/ruleblox');
 
 ReactDOM.render(<Root />, document.getElementById('root'));
 

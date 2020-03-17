@@ -33,6 +33,7 @@
     "firebase": "^7.11.0",
     "flag-icon-css": "^3.3.0",
     "font-awesome": "^4.7.0",
+    "logrocket": "^1.0.6",
     "node-sass": "^4.13.1",
     "prettier": "^1.19.1",
     "prop-types": "^15.7.2",
