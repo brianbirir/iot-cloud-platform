@@ -48,10 +48,10 @@ class App extends Component {
 	}
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
 	return {
 		isAuthenticated: state.auth.isAuthenticated,
 		isVerifying: state.auth.isVerifying
 	};
-}
+};
 export default connect(mapStateToProps)(App);
