@@ -9,6 +9,7 @@ import SignUpCard from './SignUpCard';
 
 class Login extends Component {
 	state = { email: '', password: '' };
+
 	handleEmailChange = ({ target }) => {
 		this.setState({ email: target.value });
 	};
